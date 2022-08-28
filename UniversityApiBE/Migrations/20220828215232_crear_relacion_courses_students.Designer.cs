@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UniversityApiBE.DataAcces;
 
@@ -11,9 +12,10 @@ using UniversityApiBE.DataAcces;
 namespace UniversityApiBE.Migrations
 {
     [DbContext(typeof(UniversityDBContext))]
-    partial class UniversityDBContextModelSnapshot : ModelSnapshot
+    [Migration("20220828215232_crear_relacion_courses_students")]
+    partial class crear_relacion_courses_students
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -238,13 +240,7 @@ namespace UniversityApiBE.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
 
                     b.ToTable("Students");
                 });
@@ -343,26 +339,9 @@ namespace UniversityApiBE.Migrations
                     b.Navigation("Index");
                 });
 
-            modelBuilder.Entity("UniversityApiBE.Models.DataModels.Student", b =>
-                {
-                    b.HasOne("UniversityApiBE.Models.DataModels.User", "User")
-                        .WithOne("Student")
-                        .HasForeignKey("UniversityApiBE.Models.DataModels.Student", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("UniversityApiBE.Models.DataModels.Index", b =>
                 {
                     b.Navigation("Course")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("UniversityApiBE.Models.DataModels.User", b =>
-                {
-                    b.Navigation("Student")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618
