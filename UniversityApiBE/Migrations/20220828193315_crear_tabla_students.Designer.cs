@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UniversityApiBE.DataAcces;
 
@@ -11,9 +12,10 @@ using UniversityApiBE.DataAcces;
 namespace UniversityApiBE.Migrations
 {
     [DbContext(typeof(UniversityDBContext))]
-    partial class UniversityDBContextModelSnapshot : ModelSnapshot
+    [Migration("20220828193315_crear_tabla_students")]
+    partial class crear_tabla_students
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,21 +37,6 @@ namespace UniversityApiBE.Migrations
                     b.HasIndex("CoursesId");
 
                     b.ToTable("CategoryCourse");
-                });
-
-            modelBuilder.Entity("CourseStudent", b =>
-                {
-                    b.Property<int>("CoursesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StudentsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CoursesId", "StudentsId");
-
-                    b.HasIndex("StudentsId");
-
-                    b.ToTable("CourseStudent");
                 });
 
             modelBuilder.Entity("UniversityApiBE.Models.DataModels.Category", b =>
@@ -115,9 +102,6 @@ namespace UniversityApiBE.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("IdIndex")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -138,6 +122,9 @@ namespace UniversityApiBE.Migrations
                         .HasMaxLength(280)
                         .HasColumnType("nvarchar(280)");
 
+                    b.Property<int?>("StudentsId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -147,55 +134,12 @@ namespace UniversityApiBE.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdIndex")
-                        .IsUnique()
-                        .HasFilter("[IdIndex] IS NOT NULL");
+                    b.HasIndex("StudentsId");
 
                     b.ToTable("Courses");
                 });
 
-            modelBuilder.Entity("UniversityApiBE.Models.DataModels.Index", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DeletedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("List")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UpdatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Indexes");
-                });
-
-            modelBuilder.Entity("UniversityApiBE.Models.DataModels.Student", b =>
+            modelBuilder.Entity("UniversityApiBE.Models.DataModels.Students", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -238,13 +182,7 @@ namespace UniversityApiBE.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
 
                     b.ToTable("Students");
                 });
@@ -319,51 +257,16 @@ namespace UniversityApiBE.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CourseStudent", b =>
-                {
-                    b.HasOne("UniversityApiBE.Models.DataModels.Course", null)
-                        .WithMany()
-                        .HasForeignKey("CoursesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("UniversityApiBE.Models.DataModels.Student", null)
-                        .WithMany()
-                        .HasForeignKey("StudentsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("UniversityApiBE.Models.DataModels.Course", b =>
                 {
-                    b.HasOne("UniversityApiBE.Models.DataModels.Index", "Index")
-                        .WithOne("Course")
-                        .HasForeignKey("UniversityApiBE.Models.DataModels.Course", "IdIndex");
-
-                    b.Navigation("Index");
+                    b.HasOne("UniversityApiBE.Models.DataModels.Students", null)
+                        .WithMany("Courses")
+                        .HasForeignKey("StudentsId");
                 });
 
-            modelBuilder.Entity("UniversityApiBE.Models.DataModels.Student", b =>
+            modelBuilder.Entity("UniversityApiBE.Models.DataModels.Students", b =>
                 {
-                    b.HasOne("UniversityApiBE.Models.DataModels.User", "User")
-                        .WithOne("Student")
-                        .HasForeignKey("UniversityApiBE.Models.DataModels.Student", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("UniversityApiBE.Models.DataModels.Index", b =>
-                {
-                    b.Navigation("Course")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("UniversityApiBE.Models.DataModels.User", b =>
-                {
-                    b.Navigation("Student")
-                        .IsRequired();
+                    b.Navigation("Courses");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace UniversityApiBE.Models.DataModels
 {
@@ -30,6 +31,15 @@ namespace UniversityApiBE.Models.DataModels
         // Relación many to many con Categroies
         [Required]
         public ICollection<Category> Categories { get; set; } = new List<Category>();
+
+        // Relación many to many con Students
+        public ICollection<Student> Students { get; set; } = new List<Student>();
+
+        // Relación one to one con Indexes
+        [ForeignKey("Index")]
+        public int? IdIndex { get; set; }
+
+        public virtual Index? Index { get; set; }
 
     }
 
