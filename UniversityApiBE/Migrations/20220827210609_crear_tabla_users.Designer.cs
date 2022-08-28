@@ -12,8 +12,8 @@ using UniversityApiBE.DataAcces;
 namespace UniversityApiBE.Migrations
 {
     [DbContext(typeof(UniversityDBContext))]
-    [Migration("20220827182439_crear tabla Users")]
-    partial class creartablaUsers
+    [Migration("20220827210609_crear_tabla_users")]
+    partial class crear_tabla_users
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

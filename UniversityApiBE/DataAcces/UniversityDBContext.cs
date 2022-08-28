@@ -11,6 +11,8 @@ namespace UniversityApiBE.DataAcces
         }
 
         //Añadir DBSets (las tablas de la base de datos)
-        public DbSet<User> Users { get; set; }
+        public DbSet<User>? Users { get; set; }
+        public DbSet<Course>? Courses { get; set; }
+        public DbSet<Category>? Categories { get; set; }
     }
 }

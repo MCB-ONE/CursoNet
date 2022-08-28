@@ -14,8 +14,8 @@ namespace UniversityApiBE.Models.DataModels
     public enum Levels
     {
         Basic,
-        Intermediate,
-        Hard
+        Medium,
+        Advanced
     }
 
     public class Course : BaseEntity
@@ -23,14 +23,16 @@ namespace UniversityApiBE.Models.DataModels
         [Required, MaxLength(150)]
         public string Name { get; set; } = string.Empty;
 
-        [Required, MaxLength(200)]
+        [Required, MaxLength(280)]
         public string ShortDescription { get; set; } = string.Empty;
         public string LongDescription { get; set; } = string.Empty;
-        public string Target { get; set; } = string.Empty;
-        public string objectives { get; set; } = string.Empty;
-        public string requirements { get; set; } = string.Empty;
         public Levels Level { get; set; }
-
+        // Relación many to many con Categroies
+        [Required]
+        public ICollection<Category> Categories { get; set; } = new List<Category>();
 
     }
+
+
 }
+
