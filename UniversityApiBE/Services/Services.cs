@@ -42,8 +42,6 @@ namespace UniversityApiBE.Services
         }
         public static IEnumerable<Course> FindCoursesByLevelAndCategory(IEnumerable<Course> coursesList, Levels level, Category category)
         {
-            //var matchCourses = coursesList.Where(course => course.Level == level)
-            //                   .SelectMany(course => course.Categories)
 
             var matchCourses = from courses in coursesList
                                from cat in courses.Categories
@@ -56,7 +54,7 @@ namespace UniversityApiBE.Services
 
         public static IEnumerable<Course> FindEmptyCourses(IEnumerable<Course> coursesList)
         {
-            var matchCourses = coursesList.Any(course => course.Students.Count > 0);
+            var matchCourses = coursesList.Where(course => course.Students.Count == 0);
 
             return matchCourses;
 
