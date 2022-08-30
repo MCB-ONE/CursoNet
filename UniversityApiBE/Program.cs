@@ -1,6 +1,7 @@
 //1. Usings para trabajar con EF
 using Microsoft.EntityFrameworkCore;
 using UniversityApiBE.DataAcces;
+using UniversityApiBE.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,9 +17,26 @@ builder.Services.AddDbContext<UniversityDBContext>(options => options.UseSqlServ
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+// 4. Añadir servicios personalizados (carpeta services)
+builder.Services.AddScoped<IStudentsService, StudentsServices>();
+//TODO: Añadair el resto de los servicios 
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
+// 5. Habilitar CORS (Que entornos, que tipo de métodos y cabeceras pueden acceder ala API y enviar peticiones
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "CorsPolicity", builder =>
+    {
+        builder.AllowAnyOrigin();
+        builder.AllowAnyMethod();
+        builder.AllowAnyHeader();
+    });
+});
 
 //TODO: Controlar posible excepción?
 var app = builder.Build();
@@ -35,5 +53,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Aplicar CORS a la app
+app.UseCors("CorsPolicity");
 
 app.Run();

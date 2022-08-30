@@ -34,7 +34,7 @@ namespace UniversityApiBE.Migrations
 
                     b.HasIndex("CoursesId");
 
-                    b.ToTable("CategoryCourse");
+                    b.ToTable("CategoryCourse", (string)null);
                 });
 
             modelBuilder.Entity("CourseStudent", b =>
@@ -49,7 +49,7 @@ namespace UniversityApiBE.Migrations
 
                     b.HasIndex("StudentsId");
 
-                    b.ToTable("CourseStudent");
+                    b.ToTable("CourseStudent", (string)null);
                 });
 
             modelBuilder.Entity("UniversityApiBE.Models.DataModels.Category", b =>
@@ -90,7 +90,7 @@ namespace UniversityApiBE.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("UniversityApiBE.Models.DataModels.Course", b =>
@@ -151,7 +151,7 @@ namespace UniversityApiBE.Migrations
                         .IsUnique()
                         .HasFilter("[IdIndex] IS NOT NULL");
 
-                    b.ToTable("Courses");
+                    b.ToTable("Courses", (string)null);
                 });
 
             modelBuilder.Entity("UniversityApiBE.Models.DataModels.Index", b =>
@@ -192,7 +192,7 @@ namespace UniversityApiBE.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Indexes");
+                    b.ToTable("Indexes", (string)null);
                 });
 
             modelBuilder.Entity("UniversityApiBE.Models.DataModels.Student", b =>
@@ -246,7 +246,7 @@ namespace UniversityApiBE.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Students");
+                    b.ToTable("Students", (string)null);
                 });
 
             modelBuilder.Entity("UniversityApiBE.Models.DataModels.User", b =>
@@ -301,7 +301,7 @@ namespace UniversityApiBE.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("CategoryCourse", b =>

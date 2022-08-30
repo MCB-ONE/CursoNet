@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UniversityApiBE.DataAcces;
 using UniversityApiBE.Models.DataModels;
+using UniversityApiBE.Services;
 
 namespace UniversityApiBE.Controllers
 {
@@ -15,10 +16,12 @@ namespace UniversityApiBE.Controllers
     public class StudentsController : ControllerBase
     {
         private readonly UniversityDBContext _context;
+        private readonly IStudentsService _studentsService;
 
-        public StudentsController(UniversityDBContext context)
+        public StudentsController(UniversityDBContext context, IStudentsService studentsService)
         {
             _context = context;
+            _studentsService = studentsService; 
         }
 
         // GET: api/Students
