@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
+using Core.Specifications.UserSpecifications;
 using Microsoft.AspNetCore.Mvc;
 using UniversityApiBE.Dtos.UserDto;
+using UniversityApiBE.Error;
 
 namespace UniversityApiBE.Controllers
 {
@@ -23,12 +25,13 @@ namespace UniversityApiBE.Controllers
         [ProducesResponseType(typeof(IEnumerable<UserDto>), 200)]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetUsersAll()
         {
-          //if (_userRepository.Users == null)
-          //{
-          //    return NotFound();
-          //}
+            //if (_userRepository.Users == null)
+            //{
+            //    return NotFound();
+            //}
+            var spec = new UserWithStudentSpecification();
 
-            var users = await _userRepository.GetAllAsync();
+            var users = await _userRepository.GetAllIdWithSpecAsync(spec);
 
             return _mapper.Map<List<UserDto>>(users); 
         }
@@ -42,11 +45,16 @@ namespace UniversityApiBE.Controllers
             //{
             //    return NotFound();
             //}
-            var user = await _userRepository.GetByIdAsync(id);
+
+            // spec => deve incluir la lógica de la condición de la consulta y las relaciones entre las entidades
+            // ejemplo de relación => relación entre user y student
+            var spec = new UserWithStudentSpecification(id);
+
+            var user = await _userRepository.GetByIdWithSpecAsync(spec);
 
             if (user == null)
             {
-                return NotFound();
+                return NotFound(new CodeErrorResponse(404, $"Usuario con id {id} no existe."));
             }
 
             return _mapper.Map<UserDto>(user);

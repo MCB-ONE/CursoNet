@@ -8,6 +8,7 @@ namespace UniversityApiBE.Dtos.StudentDto
         public StudentProfiles()
         {
                 CreateMap<Student, StudentDto>().ReverseMap();
+                CreateMap<Course, StudentCourseDto>();
         }
 
     }

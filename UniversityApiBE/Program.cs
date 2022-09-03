@@ -3,6 +3,7 @@ using BussinesLogic.Data;
 using BussinesLogic.Logic;
 using Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using UniversityApiBE.Dtos.StudentDto;
 using UniversityApiBE.Dtos.UserDto;
 using UniversityApiBE.Services;
 
@@ -31,7 +32,7 @@ builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositor
 
 // 4.2 Servicio automapper
 builder.Services.AddAutoMapper(typeof(UserProfiles));
-
+builder.Services.AddAutoMapper(typeof(StudentProfiles));
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -59,6 +60,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseStatusCodePagesWithReExecute("/errors", "?code={0}");
 
 app.UseHttpsRedirection();
 

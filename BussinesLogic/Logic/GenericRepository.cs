@@ -39,7 +39,7 @@ namespace BussinesLogic.Logic
 
         public async Task<IReadOnlyList<T>> GetAllIdWithSpecAsync(ISpecification<T> spec)
         {
-            throw new NotImplementedException();
+            return await ApplySpecification(spec).ToListAsync();
         }
 
         private IQueryable<T> ApplySpecification(ISpecification<T> spec)

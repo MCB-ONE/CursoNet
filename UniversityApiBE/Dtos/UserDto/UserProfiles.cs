@@ -9,6 +9,7 @@ namespace UniversityApiBE.Dtos.UserDto
         {
             // ReverseMap() => Invierte el mapeo 
             CreateMap<User, UserDto>().ReverseMap();
+            CreateMap<Student, StudentUserDto>();
             CreateMap<User, UserCreateDto>().ReverseMap();
         }
 
