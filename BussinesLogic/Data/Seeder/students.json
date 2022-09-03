@@ -1,0 +1,29 @@
+[
+  {
+    "Name": "Andrés",
+    "LastName": "Sainz",
+    "Birthay": "1990-01-03",
+    "CreatedBy": "Dev",
+    "CreatedAt": "2022-09-01",
+    "IsDeleted": "false",
+    "UserId": "1"
+  },
+  {
+    "Name": "Chritian",
+    "LastName": "Lopéz",
+    "Birthay": "1990-01-03",
+    "CreatedBy": "Dev",
+    "CreatedAt": "2022-09-01",
+    "IsDeleted": "false",
+    "UserId": "2"
+  },
+  {
+    "Name": "Marc",
+    "LastName": "Ruiz",
+    "Birthay": "1990-01-03",
+    "CreatedBy": "Dev",
+    "CreatedAt": "2022-09-01",
+    "IsDeleted": "false",
+    "UserId": "3"
+  }
+]

@@ -1,0 +1,29 @@
+[
+  {
+    "Name": "Andrés",
+    "LastName": "Sainz",
+    "Email": "andresain@gmail.com",
+    "Password": "lasvdka377",
+    "CreatedBy": "Dev",
+    "CreatedAt": "2022-09-01",
+    "IsDeleted": "false"
+  },
+  {
+    "Name": "Chritian",
+    "LastName": "Lopéz",
+    "Email": "ch_lopez33@gmail.com",
+    "Password": "lhaaak774asvdka377",
+    "CreatedBy": "Dev",
+    "CreatedAt": "2022-09-01",
+    "IsDeleted": "false"
+  },
+  {
+    "Name": "Marc",
+    "LastName": "Ruiz",
+    "Email": "neuusermarc@gmail.com",
+    "Password": "marhjs009w",
+    "CreatedBy": "Dev",
+    "CreatedAt": "2022-09-01",
+    "IsDeleted": "false"
+  }
+]

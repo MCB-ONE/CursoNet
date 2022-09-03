@@ -1,6 +1,9 @@
 //1. Usings para trabajar con EF
+using BussinesLogic.Data;
+using BussinesLogic.Logic;
+using Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using UniversityApiBE.DataAcces;
+using UniversityApiBE.Dtos.UserDto;
 using UniversityApiBE.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,13 +17,22 @@ var connectionString = builder.Configuration.GetConnectionString(CONNECTIONNAME)
 //3. Añadimos el contexto al servicio del builder
 builder.Services.AddDbContext<UniversityDBContext>(options => options.UseSqlServer(connectionString));
 
+
 // Add services to the container.
 
 builder.Services.AddControllers();
 
 // 4. Añadir servicios personalizados (carpeta services)
 builder.Services.AddScoped<IStudentsService, StudentsServices>();
+
 //TODO: Añadair el resto de los servicios 
+// 4.1 Añadir servicio de repositorio
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+// 4.2 Servicio automapper
+builder.Services.AddAutoMapper(typeof(UserProfiles));
+
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

@@ -1,4 +1,4 @@
-﻿using UniversityApiBE.Models.DataModels;
+﻿using Core.Entities;
 
 namespace UniversityApiBE.Services
 {

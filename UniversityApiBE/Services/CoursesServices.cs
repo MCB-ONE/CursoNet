@@ -1,5 +1,5 @@
-﻿using UniversityApiBE.Models.DataModels;
-using Index = UniversityApiBE.Models.DataModels.Index;
+﻿using Core.Entities;
+using Index = Core.Entities.Index;
 
 namespace UniversityApiBE.Services
 {
