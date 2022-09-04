@@ -9,7 +9,8 @@ namespace BussinesLogic.Logic
     // Clse generica que implementa la interfaz del repositorio genérico
     public class GenericRepository<T> : IGenericRepository<T> where T: BaseEntity
     {
-        private readonly UniversityDBContext _context;  
+        private readonly UniversityDBContext _context;
+        private DbSet<T> table = null;
 
         public GenericRepository(UniversityDBContext context)
         {
@@ -46,6 +47,59 @@ namespace BussinesLogic.Logic
         {
             return SpecificationEvaluator<T>.GetQuery(_context.Set<T>().AsQueryable(), spec);
         }
+
+        public async Task<int> Add(T entity)
+        {
+            _context.Set<T>().Add(entity);
+            return await _context.SaveChangesAsync();
+             
+        }
+
+        public async Task<int> Update(T entity)
+        {
+            _context.Set<T>().Attach(entity);
+            _context.Entry(entity).State = EntityState.Modified;
+
+            return await _context.SaveChangesAsync();
+        }
+
+        public async Task<int> Delete(int id)
+        {
+            T entity = await _context.Set<T>().FindAsync(id);
+
+            _context.Set<T>().Remove(entity);
+
+            return await _context.SaveChangesAsync();
+        }
+
+
+        public bool EntityExist(T entity, int id)
+        {
+            return (_context.Set<T>().Any(entity => entity.Id == id));
+        }
+
+        
+
+        // DELETE: api/Users/5
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> DeleteUser(int id)
+        //{
+        //    if (_context.Users == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var user = await _context.Users.FindAsync(id);
+        //    if (user == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    _context.Users.Remove(user);
+        //    await _context.SaveChangesAsync();
+
+        //    return NoContent();
+        //}
+
 
     }
 }

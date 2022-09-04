@@ -8,9 +8,7 @@ using UniversityApiBE.Error;
 
 namespace UniversityApiBE.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class UsersController : ControllerBase
+    public class UsersController : BaseApIController
     {
         private readonly IGenericRepository<User> _userRepository;
         private readonly IMapper _mapper;
@@ -62,82 +60,64 @@ namespace UniversityApiBE.Controllers
 
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutUser(int id, UserDto user)
-        //{
-        //    if (id != user.Id)
-        //    {
-        //        return BadRequest();
-        //    }
+        [HttpPut("{id}")]
+        public async Task<ActionResult<UserDto>> PutUser(int id, UserUpdateDto userUpdateDto)
+        {
+            if (id != userUpdateDto.Id)
+            {
+                return BadRequest("El id de la request y el id del usuario a actualizar no coinciden");
+            }
 
-        //    user.UpdatedAt = DateTime.Now;
-        //    user.UpdatedBy = "Admin";
+            userUpdateDto.UpdatedAt = DateTime.Now;
+            userUpdateDto.UpdatedBy = "Admin";
 
+           var result = await _userRepository.Update(_mapper.Map<User>(userUpdateDto));
+            
+            if(result == 0)
+            {
+                throw new Exception("El usuario no se ha podido actualizar.");
+            }
 
+            var userUpdated = _mapper.Map<UserDto>(userUpdateDto);
 
-        //    _context.Entry(_mapper.Map<User>(user)).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!UserExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return NoContent();
-        //}
+            return Ok(userUpdated);
+        }
 
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPost]
-        //public async Task<ActionResult<UserCreateDto>> PostUser(UserCreateDto userCreateDto)
-        //{
-        //    var user = _mapper.Map<User>(userCreateDto);
+        [HttpPost]
+        public async Task<ActionResult<UserDto>> PostUser(UserCreateDto userCreateDto)
+        {
+            var user = _mapper.Map<User>(userCreateDto);
 
-        //    if (_context.Users == null)
-        //  {
-        //      return Problem("Entity set 'UniversityDBContext.Users'  is null.");
-        //  }
+            var result = await _userRepository.Add(user);
 
-        //    _context.Users.Add(user);
-        //    await _context.SaveChangesAsync();
+            if (result == 0)
+            {
+                throw new Exception("Error al crear el usuario");
+            }
 
-        //    //return CreatedAtAction("GetUser", new { id = userCreateDto.Id }, userCreateDto);
-        //    return userCreateDto;
-        //}
+            var userDto = _mapper.Map<UserDto>(user);
+
+
+            return CreatedAtAction("GetUser", new { id = userDto.Id }, userDto);
+
+            //return Ok(userCreateDto);
+        }
 
         // DELETE: api/Users/5
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteUser(int id)
-        //{
-        //    if (_context.Users == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var user = await _context.Users.FindAsync(id);
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteUser(int id)
+        {
 
-        //    _context.Users.Remove(user);
-        //    await _context.SaveChangesAsync();
+            var result = await _userRepository.Delete(id);
 
-        //    return NoContent();
-        //}
+            if (result == 0)
+            {
+                throw (new Exception($"No se a podido eliminar el usuario con id {id}"));
 
-        //private bool UserExists(int id)
-        //{
-        //    return (_context.Users?.Any(entity => entity.Id == id)).GetValueOrDefault();
-        //}
+            }
+            return NoContent();
+        }
     }
 }

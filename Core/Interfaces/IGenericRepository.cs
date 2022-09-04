@@ -18,6 +18,16 @@ namespace Core.Interfaces
 
         Task<IReadOnlyList<T>> GetAllIdWithSpecAsync(ISpecification<T> spec);
 
+        // Devuelve un int porque la bd lo que devuelve en realidad es la cantidad de records o transacciones que se han realizado de manera exitosa -> en caso de fallar devuelve un 0
+        Task<int> Add(T entity);    
+
+        Task<int> Update(T entity);
+
+        Task<int> Delete(int id);
+
+        bool EntityExist(T entity, int id);
+
+
         // TODO Crear método generico que compruebe si existe la tabla
 
         //if (_userRepository.Users == null)

@@ -5,9 +5,7 @@ using Core.Interfaces;
 
 namespace UniversityApiBE.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class StudentsController : ControllerBase
+    public class StudentsController : BaseApIController
     {
         private readonly IGenericRepository<Student> _studentRepository;
         private readonly IMapper _mapper;

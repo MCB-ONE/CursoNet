@@ -35,10 +35,6 @@ namespace Core.Entities
         // Relación many to many con Students
         public ICollection<Student> Students { get; set; } = new List<Student>();
 
-        // Relación one to one con Indexes
-        [ForeignKey("Index")]
-        public int? IdIndex { get; set; }
-
         public virtual Index? Index { get; set; }
 
     }

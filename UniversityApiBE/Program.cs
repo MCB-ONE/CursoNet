@@ -5,6 +5,7 @@ using Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using UniversityApiBE.Dtos.StudentDto;
 using UniversityApiBE.Dtos.UserDto;
+using UniversityApiBE.Middleware;
 using UniversityApiBE.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -61,6 +62,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<ExceptionMiddleware>();
+
 app.UseStatusCodePagesWithReExecute("/errors", "?code={0}");
 
 app.UseHttpsRedirection();
@@ -68,7 +71,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
+ 
 // Aplicar CORS a la app
 app.UseCors("CorsPolicity");
 

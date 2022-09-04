@@ -81,6 +81,43 @@ namespace BussinesLogic.Seeder
                 UserId = 3
             }
             );
+
+            modelBuilder.Entity<Category>().HasData(
+            new Category
+            {
+                Id = 1,
+                Name = "Frontend"
+            },
+            new Category
+            {
+                Id = 2,
+                Name = "Backend"
+            },
+            new Category
+            {
+                Id = 3,
+                Name = "Framework"
+            }
+            );
+
+            modelBuilder.Entity<Category>().HasData(
+            new Category
+            {
+                Id = 1,
+                Name = "Frontend"
+            },
+            new Category
+            {
+                Id = 2,
+                Name = "Backend"
+            },
+            new Category
+            {
+                Id = 3,
+                Name = "Framework"
+            }
+            );
+
         }
     }
 }
