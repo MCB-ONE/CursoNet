@@ -12,11 +12,13 @@ namespace Core.Specifications.UserSpecifications
         public UserWithStudentSpecification()
         {
             AddInclude(user => user.Student);
+            AddInclude(user => user.Student.Courses);
         }
 
         public UserWithStudentSpecification(int id) : base(x => x.Id == id) 
         {
             AddInclude(user => user.Student);
+            AddInclude(user => user.Student.Courses);
         }
     }
 }

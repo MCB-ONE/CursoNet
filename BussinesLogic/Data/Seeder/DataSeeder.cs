@@ -1,6 +1,5 @@
 ﻿using Core.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 namespace BussinesLogic.Seeder
 {
     public class DataSeeder
@@ -83,40 +82,120 @@ namespace BussinesLogic.Seeder
             );
 
             modelBuilder.Entity<Category>().HasData(
-            new Category
-            {
-                Id = 1,
-                Name = "Frontend"
-            },
-            new Category
-            {
-                Id = 2,
-                Name = "Backend"
-            },
-            new Category
-            {
-                Id = 3,
-                Name = "Framework"
-            }
-            );
+                new Category
+                {
+                    Id = 1,
+                    Name = "Frontend",
+                    CreatedBy = "Seeder",
+                    CreatedAt = creationDate
+                },
+                new Category
+                {
+                    Id = 2,
+                    Name = "Backend",
+                    CreatedBy = "Seeder",
+                    CreatedAt = creationDate
+                },
+                new Category
+                {
+                    Id = 3,
+                    Name = "Framework",
+                    CreatedBy = "Seeder",
+                    CreatedAt = creationDate
+                },
+                new Category
+                {
+                    Id = 4,
+                    Name = "Testing",
+                    CreatedBy = "Seeder",
+                    CreatedAt = creationDate
+                },
+                new Category
+                {
+                    Id = 5,
+                    Name = "Movile",
+                    CreatedBy = "Seeder",
+                    CreatedAt = creationDate
+                }
+                );
 
-            modelBuilder.Entity<Category>().HasData(
-            new Category
+            modelBuilder.Entity<Course>().HasData(
+            new Course
             {
                 Id = 1,
-                Name = "Frontend"
+                Name = "Javascript Básico",
+                ShortDescription = "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore",
+                LongDescription = "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?",
+                Level = Levels.Basic,
+                CreatedBy = "Seeder",
+                CreatedAt = creationDate
+
             },
-            new Category
+            new Course
             {
                 Id = 2,
-                Name = "Backend"
+                Name = "Javascript Avanzado",
+                ShortDescription = "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore",
+                LongDescription = "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?",
+                Level = Levels.Advanced,
+                CreatedBy = "Seeder",
+                CreatedAt = creationDate
             },
-            new Category
+            new Course
             {
                 Id = 3,
-                Name = "Framework"
-            }
-            );
+                Name = "PHP",
+                ShortDescription = "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore",
+                LongDescription = "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?",
+                Level = Levels.Medium,
+                CreatedBy = "Seeder",
+                CreatedAt = creationDate
+            });
+            modelBuilder.Entity<Core.Entities.Index>().HasData(
+                new Core.Entities.Index
+                {
+                    Id = 1,
+                    List = "Index Javascript Básico",
+                    CourseId = 1
+                },
+                new Core.Entities.Index
+                {
+                    Id = 2,
+                    List = "Index Javascript Avanzado",
+                    CourseId = 2
+                },
+                new Core.Entities.Index
+                {
+                    Id = 3,
+                    List = "Index PHP",
+                    CourseId = 3
+                });
+
+           //Many to many relations tables seeders
+           modelBuilder
+            .Entity<Course>()
+            .HasMany(c => c.Categories)
+            .WithMany(c => c.Courses)
+            .UsingEntity(j => j.HasData(
+                new { CoursesId = 1, CategoriesId = 1 },
+                new { CoursesId = 2, CategoriesId = 3 },
+                new { CoursesId = 3, CategoriesId = 2 }
+                ));
+
+            modelBuilder
+            .Entity<Student>()
+            .HasMany(s => s.Courses)
+            .WithMany(s => s.Students)
+            .UsingEntity(j => j.HasData(
+                new { StudentsId = 1, CoursesId = 1 },
+                new { StudentsId = 1, CoursesId = 2 },
+                new { StudentsId = 1, CoursesId = 3 },
+                new { StudentsId = 2, CoursesId = 1 },
+                new { StudentsId = 2, CoursesId = 2 }
+                ));
+
+
+
 
         }
     }

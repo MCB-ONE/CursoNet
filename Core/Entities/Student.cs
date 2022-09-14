@@ -18,7 +18,7 @@ namespace Core.Entities
         public int UserId { get; set; }
 
         // Relación many to many con Courses
-        public ICollection<Course>? Courses { get; set; } = new List<Course>();
+        public HashSet<Course>? Courses { get; set; }
 
 
     }

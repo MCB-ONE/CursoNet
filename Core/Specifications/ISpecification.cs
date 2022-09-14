@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using Microsoft.EntityFrameworkCore.Query;
+using System.Linq.Expressions;
 
 namespace Core.Specifications
 {
@@ -9,5 +10,7 @@ namespace Core.Specifications
 
         // Representa las relaciones que vamos a poder implementar sobre una entidad
         List<Expression<Func<T, object>>> Includes  { get; }
+
+        //Func<IQueryable<T>, IIncludableQueryable<T, object>> Include { get; }
     }
 }

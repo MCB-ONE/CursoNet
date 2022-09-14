@@ -7,6 +7,6 @@ namespace Core.Entities
         [Required]
         public string Name { get; set; } = string.Empty;
         // Relación Many to Many con courses
-        public ICollection<Course>? Courses { get; set; } = new List<Course>();
+        public HashSet<Course>? Courses { get; set; }
     }
 }

@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace UniversityApiBE.Migrations
+namespace BussinesLogic.Data.Migrations
 {
     [DbContext(typeof(UniversityDBContext))]
-    [Migration("20220902204625_create_tables_and_initial_relations")]
-    partial class create_tables_and_initial_relations
+    [Migration("20220913150305_create_initial_tables_and_relationships")]
+    partial class create_initial_tables_and_relationships
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -39,22 +39,7 @@ namespace UniversityApiBE.Migrations
                     b.ToTable("CategoryCourse");
                 });
 
-            modelBuilder.Entity("CourseStudent", b =>
-                {
-                    b.Property<int>("CoursesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StudentsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CoursesId", "StudentsId");
-
-                    b.HasIndex("StudentsId");
-
-                    b.ToTable("CourseStudent");
-                });
-
-            modelBuilder.Entity("UniversityApiBE.Models.DataModels.Category", b =>
+            modelBuilder.Entity("Core.Entities.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -93,7 +78,7 @@ namespace UniversityApiBE.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("UniversityApiBE.Models.DataModels.Course", b =>
+            modelBuilder.Entity("Core.Entities.Course", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -113,9 +98,6 @@ namespace UniversityApiBE.Migrations
 
                     b.Property<string>("DeletedBy")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("IdIndex")
-                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -145,20 +127,20 @@ namespace UniversityApiBE.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdIndex")
-                        .IsUnique()
-                        .HasFilter("[IdIndex] IS NOT NULL");
-
                     b.ToTable("Courses");
                 });
 
-            modelBuilder.Entity("UniversityApiBE.Models.DataModels.Index", b =>
+            modelBuilder.Entity("Core.Entities.Index", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("CourseId")
+                        .IsRequired()
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -188,10 +170,13 @@ namespace UniversityApiBE.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CourseId")
+                        .IsUnique();
+
                     b.ToTable("Indexes");
                 });
 
-            modelBuilder.Entity("UniversityApiBE.Models.DataModels.Student", b =>
+            modelBuilder.Entity("Core.Entities.Student", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -243,7 +228,7 @@ namespace UniversityApiBE.Migrations
                     b.ToTable("Students");
                 });
 
-            modelBuilder.Entity("UniversityApiBE.Models.DataModels.User", b =>
+            modelBuilder.Entity("Core.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -296,61 +281,77 @@ namespace UniversityApiBE.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("CourseStudent", b =>
+                {
+                    b.Property<int>("CoursesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StudentsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CoursesId", "StudentsId");
+
+                    b.HasIndex("StudentsId");
+
+                    b.ToTable("CourseStudent");
+                });
+
             modelBuilder.Entity("CategoryCourse", b =>
                 {
-                    b.HasOne("UniversityApiBE.Models.DataModels.Category", null)
+                    b.HasOne("Core.Entities.Category", null)
                         .WithMany()
                         .HasForeignKey("CategoriesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("UniversityApiBE.Models.DataModels.Course", null)
+                    b.HasOne("Core.Entities.Course", null)
                         .WithMany()
                         .HasForeignKey("CoursesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Core.Entities.Index", b =>
+                {
+                    b.HasOne("Core.Entities.Course", "Course")
+                        .WithOne("Index")
+                        .HasForeignKey("Core.Entities.Index", "CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+                });
+
+            modelBuilder.Entity("Core.Entities.Student", b =>
+                {
+                    b.HasOne("Core.Entities.User", null)
+                        .WithOne("Student")
+                        .HasForeignKey("Core.Entities.Student", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("CourseStudent", b =>
                 {
-                    b.HasOne("UniversityApiBE.Models.DataModels.Course", null)
+                    b.HasOne("Core.Entities.Course", null)
                         .WithMany()
                         .HasForeignKey("CoursesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("UniversityApiBE.Models.DataModels.Student", null)
+                    b.HasOne("Core.Entities.Student", null)
                         .WithMany()
                         .HasForeignKey("StudentsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("UniversityApiBE.Models.DataModels.Course", b =>
+            modelBuilder.Entity("Core.Entities.Course", b =>
                 {
-                    b.HasOne("UniversityApiBE.Models.DataModels.Index", "Index")
-                        .WithOne("Course")
-                        .HasForeignKey("UniversityApiBE.Models.DataModels.Course", "IdIndex");
-
                     b.Navigation("Index");
                 });
 
-            modelBuilder.Entity("UniversityApiBE.Models.DataModels.Student", b =>
-                {
-                    b.HasOne("UniversityApiBE.Models.DataModels.User", null)
-                        .WithOne("Student")
-                        .HasForeignKey("UniversityApiBE.Models.DataModels.Student", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("UniversityApiBE.Models.DataModels.Index", b =>
-                {
-                    b.Navigation("Course")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("UniversityApiBE.Models.DataModels.User", b =>
+            modelBuilder.Entity("Core.Entities.User", b =>
                 {
                     b.Navigation("Student");
                 });

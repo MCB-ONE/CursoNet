@@ -3,8 +3,9 @@ using BussinesLogic.Data;
 using BussinesLogic.Logic;
 using Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using UniversityApiBE.Dtos.StudentDto;
-using UniversityApiBE.Dtos.UserDto;
+using System.Text.Json.Serialization;
+using UniversityApiBE.Dtos.Students;
+using UniversityApiBE.Dtos.Users;
 using UniversityApiBE.Middleware;
 using UniversityApiBE.Services;
 
@@ -21,15 +22,18 @@ builder.Services.AddDbContext<UniversityDBContext>(options => options.UseSqlServ
 
 
 // Add services to the container.
-
-builder.Services.AddControllers();
+// Configuramos los controladores para que ignoren los posibles ciclos de entidades anidadas/ relacionadas
+builder.Services.AddControllers().AddJsonOptions(options => 
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 // 4. Añadir servicios personalizados (carpeta services)
 builder.Services.AddScoped<IStudentsService, StudentsServices>();
+//builder.Services.AddScoped<ICoursesServices, CoursesServices>();
 
 //TODO: Añadair el resto de los servicios 
 // 4.1 Añadir servicio de repositorio
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
 
 // 4.2 Servicio automapper
 builder.Services.AddAutoMapper(typeof(UserProfiles));

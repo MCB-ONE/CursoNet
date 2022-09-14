@@ -30,11 +30,10 @@ namespace Core.Entities
         public Levels Level { get; set; }
         // Relación many to many con Categroies
         [Required]
-        public ICollection<Category> Categories { get; set; } = new List<Category>();
+        public List<Category> Categories { get; set; }
 
         // Relación many to many con Students
-        public ICollection<Student> Students { get; set; } = new List<Student>();
-
+        public virtual HashSet<Student>? Students { get; set; }
         public virtual Index? Index { get; set; }
 
     }

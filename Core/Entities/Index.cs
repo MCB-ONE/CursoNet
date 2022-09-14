@@ -8,10 +8,10 @@ namespace Core.Entities
         [Required]
         public string List { get; set; } = string.Empty;
         [Required]
-        public virtual Course Course { get; set; }
 
-        // Relación one to one con Indexes
+        // Relación one to one con Course
         [ForeignKey("Course")]
-        public int? IdIndex { get; set; }
+        public int? CourseId { get; set; }
+        public Course Course { get; set; }
     }
 }

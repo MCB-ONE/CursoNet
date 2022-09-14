@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace UniversityApiBE.Migrations
+namespace BussinesLogic.Data.Migrations
 {
-    public partial class create_tables_and_initial_relations : Migration
+    public partial class create_initial_tables_and_relationships : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -30,12 +30,15 @@ namespace UniversityApiBE.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Indexes",
+                name: "Courses",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    List = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    ShortDescription = table.Column<string>(type: "nvarchar(280)", maxLength: 280, nullable: false),
+                    LongDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Level = table.Column<int>(type: "int", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -46,7 +49,7 @@ namespace UniversityApiBE.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Indexes", x => x.Id);
+                    table.PrimaryKey("PK_Courses", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -73,16 +76,37 @@ namespace UniversityApiBE.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Courses",
+                name: "CategoryCourse",
+                columns: table => new
+                {
+                    CategoriesId = table.Column<int>(type: "int", nullable: false),
+                    CoursesId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CategoryCourse", x => new { x.CategoriesId, x.CoursesId });
+                    table.ForeignKey(
+                        name: "FK_CategoryCourse_Categories_CategoriesId",
+                        column: x => x.CategoriesId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CategoryCourse_Courses_CoursesId",
+                        column: x => x.CoursesId,
+                        principalTable: "Courses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Indexes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    ShortDescription = table.Column<string>(type: "nvarchar(280)", maxLength: 280, nullable: false),
-                    LongDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Level = table.Column<int>(type: "int", nullable: false),
-                    IdIndex = table.Column<int>(type: "int", nullable: true),
+                    List = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CourseId = table.Column<int>(type: "int", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -93,12 +117,13 @@ namespace UniversityApiBE.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Courses", x => x.Id);
+                    table.PrimaryKey("PK_Indexes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Courses_Indexes_IdIndex",
-                        column: x => x.IdIndex,
-                        principalTable: "Indexes",
-                        principalColumn: "Id");
+                        name: "FK_Indexes_Courses_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Courses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -126,30 +151,6 @@ namespace UniversityApiBE.Migrations
                         name: "FK_Students_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CategoryCourse",
-                columns: table => new
-                {
-                    CategoriesId = table.Column<int>(type: "int", nullable: false),
-                    CoursesId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CategoryCourse", x => new { x.CategoriesId, x.CoursesId });
-                    table.ForeignKey(
-                        name: "FK_CategoryCourse_Categories_CategoriesId",
-                        column: x => x.CategoriesId,
-                        principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CategoryCourse_Courses_CoursesId",
-                        column: x => x.CoursesId,
-                        principalTable: "Courses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -184,16 +185,15 @@ namespace UniversityApiBE.Migrations
                 column: "CoursesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Courses_IdIndex",
-                table: "Courses",
-                column: "IdIndex",
-                unique: true,
-                filter: "[IdIndex] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_CourseStudent_StudentsId",
                 table: "CourseStudent",
                 column: "StudentsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Indexes_CourseId",
+                table: "Indexes",
+                column: "CourseId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Students_UserId",
@@ -211,16 +211,16 @@ namespace UniversityApiBE.Migrations
                 name: "CourseStudent");
 
             migrationBuilder.DropTable(
-                name: "Categories");
+                name: "Indexes");
 
             migrationBuilder.DropTable(
-                name: "Courses");
+                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "Students");
 
             migrationBuilder.DropTable(
-                name: "Indexes");
+                name: "Courses");
 
             migrationBuilder.DropTable(
                 name: "Users");

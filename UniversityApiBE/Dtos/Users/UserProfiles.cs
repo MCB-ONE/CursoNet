@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Core.Entities;
 
-namespace UniversityApiBE.Dtos.UserDto
+namespace UniversityApiBE.Dtos.Users
 {
     public class UserProfiles : Profile
     {
@@ -9,7 +9,6 @@ namespace UniversityApiBE.Dtos.UserDto
         {
             // ReverseMap() => Invierte el mapeo 
             CreateMap<User, UserDto>().ReverseMap();
-            CreateMap<Student, StudentUserDto>();
             CreateMap<User, UserCreateDto>().ReverseMap();
             CreateMap<UserDto, UserCreateDto>().ReverseMap();
             CreateMap<UserUpdateDto, User>().ReverseMap();

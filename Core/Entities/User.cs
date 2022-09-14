@@ -14,6 +14,6 @@ namespace Core.Entities
         [Required]
         public string Password { get; set; } = string.Empty;
 
-        public virtual Student? Student { get; set; }
+        public Student? Student { get; set; }
     }
 }

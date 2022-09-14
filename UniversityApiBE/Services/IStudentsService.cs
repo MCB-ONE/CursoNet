@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using UniversityApiBE.Dtos.Courses;
 
 namespace UniversityApiBE.Services
 {
@@ -7,7 +8,6 @@ namespace UniversityApiBE.Services
         IEnumerable<Student> GetStudentsWhitCourses(IEnumerable<Student> studentList);
         IEnumerable<Student> GetStudentsWhitNotCourses(IEnumerable<Student> studentList);
         IEnumerable<Course> GetStudentCourses(Student student, IEnumerable<Course> coursesList);
-
 
     }
 }

@@ -3,7 +3,7 @@ using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications.UserSpecifications;
 using Microsoft.AspNetCore.Mvc;
-using UniversityApiBE.Dtos.UserDto;
+using UniversityApiBE.Dtos.Users;
 using UniversityApiBE.Error;
 
 namespace UniversityApiBE.Controllers
@@ -12,9 +12,9 @@ namespace UniversityApiBE.Controllers
     {
         private readonly IGenericRepository<User> _userRepository;
         private readonly IMapper _mapper;
-        public UsersController(IGenericRepository<User> studentRepository, IMapper mapper)
+        public UsersController(IGenericRepository<User> userRepository, IMapper mapper)
         {
-            _userRepository = studentRepository;
+            _userRepository = userRepository;
             _mapper = mapper;
         }
 

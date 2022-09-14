@@ -10,17 +10,13 @@ namespace BussinesLogic.Logic
     public class GenericRepository<T> : IGenericRepository<T> where T: BaseEntity
     {
         private readonly UniversityDBContext _context;
-        private DbSet<T> table = null;
+        private DbSet<T> entities;
 
         public GenericRepository(UniversityDBContext context)
         {
             _context = context;
+            entities = context.Set<T>();
         }
-
-        //private bool EntitiExist(int id)
-        //{
-        //    return (_context.Users?.Any(entity => entity.Id == id)).GetValueOrDefault();
-        //}
 
         public async Task<IReadOnlyList<T>> GetAllAsync()
         {       
@@ -29,6 +25,7 @@ namespace BussinesLogic.Logic
 
         public async Task<T> GetByIdAsync(int id)
         {
+
             return await _context.Set<T>().FindAsync(id);
 
         }
@@ -43,13 +40,12 @@ namespace BussinesLogic.Logic
             return await ApplySpecification(spec).ToListAsync();
         }
 
-        private IQueryable<T> ApplySpecification(ISpecification<T> spec)
-        {
-            return SpecificationEvaluator<T>.GetQuery(_context.Set<T>().AsQueryable(), spec);
-        }
-
         public async Task<int> Add(T entity)
         {
+            if (entity == null)
+            {
+                throw new ArgumentNullException("entity");
+            }
             _context.Set<T>().Add(entity);
             return await _context.SaveChangesAsync();
              
@@ -57,6 +53,15 @@ namespace BussinesLogic.Logic
 
         public async Task<int> Update(T entity)
         {
+            if (entity == null)
+            {
+                throw new ArgumentNullException("entity");
+            }
+            //if (EntityExist(entity, entity.Id))
+            //{
+               
+            //    throw new Exception("La entidad no existe");
+            //}
             _context.Set<T>().Attach(entity);
             _context.Entry(entity).State = EntityState.Modified;
 
@@ -72,13 +77,18 @@ namespace BussinesLogic.Logic
             return await _context.SaveChangesAsync();
         }
 
+        private IQueryable<T> ApplySpecification(ISpecification<T> spec)
+        {
+            return SpecificationEvaluator<T>.GetQuery(_context.Set<T>().AsQueryable(), spec);
+        }
 
         public bool EntityExist(T entity, int id)
         {
             return (_context.Set<T>().Any(entity => entity.Id == id));
         }
 
-        
+
+
 
         // DELETE: api/Users/5
         //[HttpDelete("{id}")]
