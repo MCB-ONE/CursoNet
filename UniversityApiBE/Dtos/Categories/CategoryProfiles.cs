@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Core.Entities;
+using UniversityApiBE.Dtos.Courses;
 
 namespace UniversityApiBE.Dtos.Categories
 {
@@ -8,6 +9,7 @@ namespace UniversityApiBE.Dtos.Categories
         public CategoryProfiles()
         {
             CreateMap<Category, CategoryDto>().ReverseMap();
+            CreateMap<Course, CourseDto>().ReverseMap();
         }
 
     }

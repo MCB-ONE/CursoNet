@@ -1,19 +1,16 @@
 ﻿using Core.Entities;
 using UniversityApiBE.Dtos.Courses;
 
-namespace UniversityApiBE.Services
+namespace UniversityApiBE.Services.Courses
 {
     public interface ICoursesServices
     {
-        IEnumerable<Course> AddStudentCourses(IEnumerable<Course> coursesList, Category category);
+        Task<List<Course>> FilterCoursesByCategoryAsync(int categoryId);
+        Task<List<Course>> FilterCoursesWhitoutIndexAsync();
 
-        //IEnumerable<Course> GetCoursesByCategory(IEnumerable<Course> coursesList, Category category);
         //IEnumerable<Course> GetCoursesWhitNotIndexes(IEnumerable<Course> coursesList);
         //Index GetCourseIndex(Course course, List<Index> indexList);
         //IEnumerable<Student> GetCourseStudents(Course course, IEnumerable<Student> studentsList);
-
-        Task<int> UpdateCourse(CourseUpdateDto courseUpdateDto);
-
 
     }
 }

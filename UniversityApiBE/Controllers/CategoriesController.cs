@@ -4,6 +4,8 @@ using Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UniversityApiBE.Dtos.Categories;
+using UniversityApiBE.Services.Categories;
+using UniversityApiBE.Services.Students;
 
 namespace UniversityApiBE.Controllers
 {
@@ -36,6 +38,7 @@ namespace UniversityApiBE.Controllers
 
             return _mapper.Map<CategoryDto>(category);
         }
+
 
         [HttpPut("{id}")]
         public async Task<ActionResult<CategoryDto>> PutCategory(int id, CategoryDto categoryDto)

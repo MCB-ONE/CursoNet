@@ -7,7 +7,9 @@ using System.Text.Json.Serialization;
 using UniversityApiBE.Dtos.Students;
 using UniversityApiBE.Dtos.Users;
 using UniversityApiBE.Middleware;
-using UniversityApiBE.Services;
+using UniversityApiBE.Services.Courses;
+using UniversityApiBE.Services.Indexes;
+using UniversityApiBE.Services.Students;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,7 +30,8 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 
 // 4. Añadir servicios personalizados (carpeta services)
 builder.Services.AddScoped<IStudentsService, StudentsServices>();
-//builder.Services.AddScoped<ICoursesServices, CoursesServices>();
+builder.Services.AddScoped<ICoursesServices, CoursesServices>();
+builder.Services.AddScoped<IIndexesService, IndexesService>();
 
 //TODO: Añadair el resto de los servicios 
 // 4.1 Añadir servicio de repositorio

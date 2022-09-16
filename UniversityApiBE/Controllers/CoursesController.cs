@@ -1,14 +1,11 @@
 ﻿using AutoMapper;
 using BussinesLogic.Data;
 using Core.Entities;
-using Core.Interfaces;
-using Core.Specifications.Courses;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using UniversityApiBE.Services.Courses;
 using UniversityApiBE.Dtos.Courses;
 using UniversityApiBE.Error;
-using UniversityApiBE.Services;
 
 namespace UniversityApiBE.Controllers
 {
@@ -16,10 +13,12 @@ namespace UniversityApiBE.Controllers
     {
         private readonly IMapper _mapper;
         private readonly UniversityDBContext _context;
-        public CoursesController(UniversityDBContext context, IMapper mapper)
+        private readonly ICoursesServices _coursesServices;
+        public CoursesController(UniversityDBContext context, ICoursesServices coursesServices, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
+            _coursesServices = coursesServices;
         }
 
         [HttpGet]
@@ -38,6 +37,31 @@ namespace UniversityApiBE.Controllers
             return Ok(coursesDto);
         }
 
+        [HttpGet("getCoursesByCategory/{categoryId}")]
+        public async Task<ActionResult<IEnumerable<CourseDto>>> GetCoursesByCategory(int categoryId)
+        {
+            var courses = await _coursesServices.FilterCoursesByCategoryAsync(categoryId);
+
+            if (courses == null)
+                return NotFound();
+
+
+            return _mapper.Map<List<CourseDto>>(courses);
+        }
+
+        [HttpGet("getCoursesWithoutIndex")]
+        public async Task<ActionResult<IEnumerable<CourseDto>>> GetCoursesWithoutIndex()
+        {
+            var courses = await _coursesServices.FilterCoursesWhitoutIndexAsync();
+
+            if (courses == null)
+                return NotFound();
+
+
+            return _mapper.Map<List<CourseDto>>(courses);
+        }
+
+
         [HttpGet("{id}")]
         public async Task<ActionResult<CourseDto>> GetCourse(int id)
         {
@@ -55,24 +79,51 @@ namespace UniversityApiBE.Controllers
             return Ok(_mapper.Map<CourseDto>(course));
         }
 
-        [HttpPut("UpdateCourseCategories/{id:int}")]
-        public async Task<ActionResult<CourseDto>> UpdateCourseCategories(int id, CourseUpdateDto dto)
+        /*
+         * Ruta para actualizar curso, datso, indice y categorias
+         */
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult<CourseDto>> UpdateCourse(int id, CourseUpdateDto dto)
         {
             // Recuperamos registro a actualizar
             var courseDb = _context.Courses
                             .Include(c => c.Categories)
-                            .Include(c => c.Index).AsNoTracking()
+                            .Include(c => c.Index)
                             .FirstOrDefault(c => c.Id == id);
 
-            if (courseDb == null)
-            {
-                return NotFound();
 
-            }
+            if (courseDb == null)
+                return NotFound();
 
             // Actualizamos las props con las que llegan en la request no las relaciones
             _context.Entry(courseDb).CurrentValues.SetValues(dto);
 
+            // Crear indice nuevo si el curso no tiene
+            if (courseDb.Index == null)
+            {
+                _context.Indexes.Add(new Core.Entities.Index
+                {
+                    CourseId = dto.Index.CourseId,
+                    List = dto.Index.List
+                });
+
+            }
+
+            // Borrar indice actual o actualizar existente
+            if (dto.Index == null)
+            {
+                var indexToRemove = await _context.Indexes.FirstOrDefaultAsync(i => i.CourseId == id);
+                _context.Set<Core.Entities.Index>().Remove(indexToRemove);
+                courseDb.Index = null;
+            }
+            else
+            {
+                // Actualizar indice existente si llegan nuevas propiedades
+                courseDb.Index.List = dto.Index.List;
+            }
+
+            //Actualizar categorias
             if (dto.CategoriesIds != null)
             {
                 var categoriesToRemove = courseDb.Categories.ToList();
@@ -86,46 +137,8 @@ namespace UniversityApiBE.Controllers
                     courseDb.Categories.Add(catToAdd);
             }
 
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetCourse), new { id = courseDb.Id }, _mapper.Map<CourseDto>(courseDb));
-        }
-
-        [HttpPut("UpdateCourseIndex/{id:int}")]
-        public async Task<ActionResult<CourseDto>> UpdateCourseIndex(int id, CourseUpdateDto dto)
-        {
-            // Recuperamos registro a actualizar
-            var courseDb = _context.Courses
-                            .Include(c => c.Categories).AsNoTracking()
-                            .Include(c => c.Index)
-                            .FirstOrDefault(c => c.Id == id);
-
-            if (courseDb == null)
-                return NotFound();
-
-
-            if(courseDb.Index == null) {
-                _context.Indexes.Add(new Core.Entities.Index
-                {
-                    Id = dto.Index.Id,
-                    CourseId = dto.Index.CourseId,
-                    List = dto.Index.List
-                });
-                courseDb.Index = new Core.Entities.Index
-                {
-                    Id = dto.Index.Id,
-                    CourseId = dto.Index.CourseId,
-                    List = dto.Index.List
-                };
-            }
-
-
-            if (dto.Index == null)
-            {
-                var indexToRemove = _context.Indexes.FirstOrDefault(i => i.CourseId == id);
-                _context.Set<Core.Entities.Index>().Remove(indexToRemove);
-                courseDb.Index = null;
-            }
+            //_context.Courses.Attach(courseDb);
+            //_context.Entry(courseDb).State = EntityState.Modified;
 
             await _context.SaveChangesAsync();
 

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UniversityApiBE.Dtos.Indexes;
+using UniversityApiBE.Services.Indexes;
 
 namespace UniversityApiBE.Controllers
 {
@@ -11,10 +12,12 @@ namespace UniversityApiBE.Controllers
     {
         private readonly IMapper _mapper;
         private readonly UniversityDBContext _context;
-        public IndexController(UniversityDBContext context, IMapper mapper)
+        private readonly IIndexesService _indexesService;
+        public IndexController(UniversityDBContext context, IIndexesService indexesService, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
+            _indexesService = indexesService;
         }
 
         [HttpGet]
@@ -36,6 +39,20 @@ namespace UniversityApiBE.Controllers
 
             return Ok(indexsDto);
         }
+
+        [HttpGet("geIndexByCourseId{courseId:int}")]
+        public async Task<ActionResult<IndexDto>> getIndexByCourseId(int courseId)
+        {
+            var index = await _indexesService.FilterIndexByCourseAsync(courseId);
+
+            if(index == null)
+                return NotFound();  
+
+
+            return Ok(_mapper.Map<IndexDto>(index));
+        }
+
+
 
     }
 }

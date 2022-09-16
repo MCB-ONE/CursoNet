@@ -4,17 +4,20 @@ using Core.Entities;
 using Core.Interfaces;
 using UniversityApiBE.Dtos.Students;
 using Core.Specifications.StudentSpecification;
+using UniversityApiBE.Services.Students;
 
 namespace UniversityApiBE.Controllers
 {
     public class StudentsController : BaseApIController
     {
         private readonly IGenericRepository<Student> _studentRepository;
+        private readonly IStudentsService _studentService;
         private readonly IMapper _mapper;
 
-        public StudentsController(IGenericRepository<Student> studentRepository, IMapper mapper)
+        public StudentsController(IGenericRepository<Student> studentRepository, IStudentsService studentService, IMapper mapper)
         {
             _studentRepository = studentRepository;
+            _studentService = studentService;
             _mapper = mapper;
         }
 
@@ -28,6 +31,15 @@ namespace UniversityApiBE.Controllers
             return _mapper.Map<List<StudentDto>>(students);
         }
 
+        [HttpGet("getStudentsWhitoutCourses")]
+        public async Task<ActionResult<List<StudentDto>>> GetStudentsWithoutCourses()
+        {
+            
+            var students = await _studentService.FilterStudentsWithOutCoursesAsync();
+
+            return _mapper.Map<List<StudentDto>>(students);
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<StudentDto>> GetStudent(int id)
         {
@@ -37,8 +49,22 @@ namespace UniversityApiBE.Controllers
             return _mapper.Map<StudentDto>(student);
         }
 
-        [HttpPut("UpdateStudentInformation/{id}")]
-        public async Task<ActionResult<StudentUpdateDto>> UpdateStudentInformation(int id, StudentUpdateDto studentUpdateDto)
+        [HttpGet("GetStudentsByCourse/{courseId:int}")]
+        public async Task<ActionResult<List<StudentDto>>> GetStudentsByCourse(int courseId)
+        {
+            
+            var students = await _studentService.FilterStudentsByCoursesAsync(courseId);
+
+            if(students == null)
+                return NotFound();
+
+
+            return _mapper.Map<List<StudentDto>>(students);
+        }
+
+
+        [HttpPut("UpdateStudent/{id}")]
+        public async Task<ActionResult<StudentUpdateDto>> UpdateStudent(int id, StudentUpdateDto studentUpdateDto)
         {
 
             if (id != studentUpdateDto.Id)
@@ -49,18 +75,15 @@ namespace UniversityApiBE.Controllers
             studentUpdateDto.UpdatedAt = DateTime.Now;
             studentUpdateDto.UpdatedBy = studentUpdateDto.Name;
 
-            var result = await _studentRepository.Update(_mapper.Map<Student>(studentUpdateDto));
+            var result = await _studentService.UpdateStudentAsync(id, studentUpdateDto);
 
             if (result == 0)
             {
                 throw new Exception("El estudiante no se ha podido actualizar.");
             }
 
-
             return Ok(studentUpdateDto);
         }
-
-
 
 
         [HttpPost]
