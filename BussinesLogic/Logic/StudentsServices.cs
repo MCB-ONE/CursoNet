@@ -1,20 +1,20 @@
 ﻿using BussinesLogic.Data;
 using Core.Entities;
+using Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using UniversityApiBE.Dtos.Students;
 
-namespace UniversityApiBE.Services.Students
+namespace BussinesLogic.Logic
 {
-    public class StudentsServices : IStudentsService
+    public class StudentsServices : GenericService<Student>, IStudentsService
     {
         private readonly UniversityDBContext _context;
 
-        public StudentsServices(UniversityDBContext context)
+        public StudentsServices(UniversityDBContext context):  base(context)
         {
             _context = context;
         }
 
-        public async Task<List<Student>> FilterStudentsByCoursesAsync(int courseId)
+        public async Task<List<Student>> FilterStudentsByCourses(int courseId)
         {
             var courseExist = await _context.Courses.AnyAsync(c => c.Id == courseId);
 
@@ -27,7 +27,7 @@ namespace UniversityApiBE.Services.Students
                 .ToListAsync();
         }
 
-        public async Task<List<Student>> FilterStudentsWithOutCoursesAsync()
+        public async Task<List<Student>> FilterStudentsWithOutCourses()
         {
             return await _context.Students
                          .Where(s => s.Courses.Count == 0)
@@ -36,12 +36,12 @@ namespace UniversityApiBE.Services.Students
 
         }
 
-        public async Task<int> UpdateStudentAsync(int id, StudentUpdateDto dto)
+        public async Task<int> UpdateStudent(int studentId, Student studentUpdated, List<int> newCouresIds)
         {
 
             var studentDb = await _context.Students
                             .Include(s => s.Courses)
-                            .FirstOrDefaultAsync(c => c.Id == id);
+                            .FirstOrDefaultAsync(c => c.Id == studentId);
 
             if (studentDb == null)
             {
@@ -49,9 +49,9 @@ namespace UniversityApiBE.Services.Students
             }
 
             // Actualizamos las props con las que llegan en la request no las relaciones
-            _context.Entry(studentDb).CurrentValues.SetValues(dto);
+            _context.Entry(studentDb).CurrentValues.SetValues(studentUpdated);
 
-            if (dto.CoursesId != null)
+            if (newCouresIds.Count > 0)
             {
                 // Eliminamos las relaciones actuales del registro de la bdd
                 var coursesToRemove = studentDb.Courses.ToList();
@@ -60,8 +60,10 @@ namespace UniversityApiBE.Services.Students
 
 
                 // Añadimos todas las relaciones que llegan des de el cliente
+                
+
                 var coursesToAdd = await _context.Courses
-                    .Where(c => dto.CoursesId.Contains(c.Id))
+                    .Where(c => newCouresIds.Contains(c.Id))
                     .ToListAsync();
                 foreach (var courseToAdd in coursesToAdd)
                     studentDb.Courses.Add(courseToAdd);
@@ -77,31 +79,6 @@ namespace UniversityApiBE.Services.Students
             return await _context.SaveChangesAsync();
         }
 
-
-        //public IEnumerable<Course> GetStudentCourses(Student student, IEnumerable<Course> coursesList)
-        //{
-        //    var studentCoursesList = from studentCourse in student.Courses
-        //                             from course in coursesList
-        //                             where course.Id == studentCourse.Id
-        //                             select course;
-        //    return studentCoursesList;
-        //}
-
-        //public IEnumerable<Student> GetStudentsWhitCourses(IEnumerable<Student> studentList)
-        //{
-        //    var studentsWhitCourses = from student in studentList
-        //                              where student.Courses.Count > 0
-        //                              select student;
-        //    return studentsWhitCourses;
-        //}
-
-        //public IEnumerable<Student> GetStudentsWhitNotCourses(IEnumerable<Student> studentList)
-        //{
-        //    var studentsWhitCourses = from student in studentList
-        //                              where student.Courses.Count == 0
-        //                              select student;
-        //    return studentsWhitCourses;
-        //}
 
 
     }

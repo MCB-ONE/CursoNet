@@ -8,6 +8,8 @@ namespace UniversityApiBE.Dtos.Students
         public string LastName { get; set; } = string.Empty;
         public DateTime Birthay { get; set; }
 
+        public int UserId { get; set; }
+
         // Relación many to many con Students
         public List<int>? CoursesId { get; set; }
         // Relación one to one con user

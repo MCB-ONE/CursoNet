@@ -7,12 +7,12 @@ using Microsoft.EntityFrameworkCore;
 namespace BussinesLogic.Logic
 { 
     // Clse generica que implementa la interfaz del repositorio genérico
-    public class GenericRepository<T> : IGenericRepository<T> where T: BaseEntity
+    public class GenericService<T> : IGenericService<T> where T: BaseEntity
     {
         private readonly UniversityDBContext _context;
         private DbSet<T> entities;
 
-        public GenericRepository(UniversityDBContext context)
+        public GenericService(UniversityDBContext context)
         {
             _context = context;
             entities = context.Set<T>();
@@ -57,11 +57,6 @@ namespace BussinesLogic.Logic
             {
                 throw new ArgumentNullException("entity");
             }
-            //if (EntityExist(entity, entity.Id))
-            //{
-               
-            //    throw new Exception("La entidad no existe");
-            //}
             _context.Set<T>().Attach(entity);
             _context.Entry(entity).State = EntityState.Modified;
 

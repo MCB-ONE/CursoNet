@@ -10,9 +10,9 @@ namespace UniversityApiBE.Controllers
 {
     public class UsersController : BaseApIController
     {
-        private readonly IGenericRepository<User> _userRepository;
+        private readonly IGenericService<User> _userRepository;
         private readonly IMapper _mapper;
-        public UsersController(IGenericRepository<User> userRepository, IMapper mapper)
+        public UsersController(IGenericService<User> userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
             _mapper = mapper;

@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
 using BussinesLogic.Data;
 using Core.Entities;
+using Core.Interfaces;
+using Core.Specifications.Courses;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using UniversityApiBE.Services.Courses;
 using UniversityApiBE.Dtos.Courses;
 using UniversityApiBE.Error;
 
@@ -12,11 +13,10 @@ namespace UniversityApiBE.Controllers
     public class CoursesController : BaseApIController
     {
         private readonly IMapper _mapper;
-        private readonly UniversityDBContext _context;
         private readonly ICoursesServices _coursesServices;
-        public CoursesController(UniversityDBContext context, ICoursesServices coursesServices, IMapper mapper)
+        public CoursesController(ICoursesServices coursesServices, IMapper mapper)
         {
-            _context = context;
+     
             _mapper = mapper;
             _coursesServices = coursesServices;
         }
@@ -25,12 +25,10 @@ namespace UniversityApiBE.Controllers
         public async Task<ActionResult<IEnumerable<CourseDto>>> GetAllCourses()
         {
 
+            var spec = new CourseFullSpecification();
+
             // Eager loading
-            var courses = await _context.Courses
-                          .Include(c => c.Categories)
-                          .Include(c => c.Index)
-                          .Include(c => c.Students)
-                          .ToListAsync();
+            var courses = await _coursesServices.GetAllIdWithSpecAsync(spec);
 
             var coursesDto = _mapper.Map<List<CourseDto>>(courses);
 
@@ -40,7 +38,7 @@ namespace UniversityApiBE.Controllers
         [HttpGet("getCoursesByCategory/{categoryId}")]
         public async Task<ActionResult<IEnumerable<CourseDto>>> GetCoursesByCategory(int categoryId)
         {
-            var courses = await _coursesServices.FilterCoursesByCategoryAsync(categoryId);
+            var courses = await _coursesServices.FilterCoursesByCategory(categoryId);
 
             if (courses == null)
                 return NotFound();
@@ -52,7 +50,7 @@ namespace UniversityApiBE.Controllers
         [HttpGet("getCoursesWithoutIndex")]
         public async Task<ActionResult<IEnumerable<CourseDto>>> GetCoursesWithoutIndex()
         {
-            var courses = await _coursesServices.FilterCoursesWhitoutIndexAsync();
+            var courses = await _coursesServices.FilterCoursesWhitoutIndex();
 
             if (courses == null)
                 return NotFound();
@@ -65,11 +63,8 @@ namespace UniversityApiBE.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CourseDto>> GetCourse(int id)
         {
-            var course = await _context.Courses
-                         .Include(c => c.Categories)
-                         .Include(c => c.Index)
-                         .Include(c => c.Students)
-                         .FirstOrDefaultAsync(c => c.Id == id);
+            var spec = new CourseFullSpecification(id);
+            var course = await _coursesServices.GetByIdWithSpecAsync(spec);
 
             if (course == null)
             {
@@ -80,69 +75,30 @@ namespace UniversityApiBE.Controllers
         }
 
         /*
-         * Ruta para actualizar curso, datso, indice y categorias
+         * Ruta para actualizar curso, datos, indice y categorias
          */
 
         [HttpPut("{id:int}")]
         public async Task<ActionResult<CourseDto>> UpdateCourse(int id, CourseUpdateDto dto)
         {
-            // Recuperamos registro a actualizar
-            var courseDb = _context.Courses
-                            .Include(c => c.Categories)
-                            .Include(c => c.Index)
-                            .FirstOrDefault(c => c.Id == id);
 
-
-            if (courseDb == null)
-                return NotFound();
-
-            // Actualizamos las props con las que llegan en la request no las relaciones
-            _context.Entry(courseDb).CurrentValues.SetValues(dto);
-
-            // Crear indice nuevo si el curso no tiene
-            if (courseDb.Index == null)
+            if (id != dto.Id)
             {
-                _context.Indexes.Add(new Core.Entities.Index
-                {
-                    CourseId = dto.Index.CourseId,
-                    List = dto.Index.List
-                });
-
+                return BadRequest("El id de la request y el id del curso a actualizar no coinciden");
             }
 
-            // Borrar indice actual o actualizar existente
-            if (dto.Index == null)
+            dto.UpdatedAt = DateTime.Now;
+            dto.UpdatedBy = "Test";
+
+            var newCategoriesIds = dto.CategoriesIds;
+
+            var result = await _coursesServices.UpdateCourse(id, _mapper.Map<Course>(dto), newCategoriesIds);
+            if(result == 0)
             {
-                var indexToRemove = await _context.Indexes.FirstOrDefaultAsync(i => i.CourseId == id);
-                _context.Set<Core.Entities.Index>().Remove(indexToRemove);
-                courseDb.Index = null;
-            }
-            else
-            {
-                // Actualizar indice existente si llegan nuevas propiedades
-                courseDb.Index.List = dto.Index.List;
+                throw new Exception("El curso no se ha podido actualizar.");
             }
 
-            //Actualizar categorias
-            if (dto.CategoriesIds != null)
-            {
-                var categoriesToRemove = courseDb.Categories.ToList();
-                foreach (var catToRemove in categoriesToRemove)
-                    courseDb.Categories.Remove(catToRemove);
-
-                var catsToAdd = await _context.Categories
-                    .Where(c => dto.CategoriesIds.Contains(c.Id))
-                    .ToListAsync();
-                foreach (var catToAdd in catsToAdd)
-                    courseDb.Categories.Add(catToAdd);
-            }
-
-            //_context.Courses.Attach(courseDb);
-            //_context.Entry(courseDb).State = EntityState.Modified;
-
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetCourse), new { id = courseDb.Id }, _mapper.Map<CourseDto>(courseDb));
+            return Ok(dto);
         }
 
 
@@ -153,15 +109,14 @@ namespace UniversityApiBE.Controllers
 
             var course = _mapper.Map<Course>(courseCreateDto);
 
-            course.Categories.ForEach(cat => _context.Entry(cat).State = EntityState.Unchanged);
+            var result = await _coursesServices.CreateCourseWhitCategories(course);
 
-            //TODO: Agregar inserción index
+            if(result == 0)
+            {
+                return BadRequest();
+            }
 
-            _context.Add(course);
-
-            await _context.SaveChangesAsync();
-
-            return Ok(course.Id);
+            return Ok(courseCreateDto);
 
         }
     }

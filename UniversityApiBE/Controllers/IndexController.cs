@@ -1,21 +1,18 @@
 ﻿using AutoMapper;
 using BussinesLogic.Data;
-using Microsoft.AspNetCore.Http;
+using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UniversityApiBE.Dtos.Indexes;
-using UniversityApiBE.Services.Indexes;
 
 namespace UniversityApiBE.Controllers
 {
     public class IndexController : BaseApIController
     {
         private readonly IMapper _mapper;
-        private readonly UniversityDBContext _context;
         private readonly IIndexesService _indexesService;
-        public IndexController(UniversityDBContext context, IIndexesService indexesService, IMapper mapper)
+        public IndexController(IIndexesService indexesService, IMapper mapper)
         {
-            _context = context;
             _mapper = mapper;
             _indexesService = indexesService;
         }
@@ -23,7 +20,7 @@ namespace UniversityApiBE.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<IndexDto>>> GetAllIndexes()
         {
-            var indexes = await _context.Indexes.ToListAsync();
+            var indexes = await _indexesService.GetAllAsync();
 
             var indexesDto = _mapper.Map<List<IndexDto>>(indexes);
 
@@ -33,7 +30,7 @@ namespace UniversityApiBE.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult<IndexDto>> GetIndexById(int id)
         {
-            var index = await _context.Indexes.FirstOrDefaultAsync(i => i.Id == id);
+            var index = await _indexesService.GetByIdAsync(id);
 
             var indexsDto = _mapper.Map<IndexDto>(index);
 
@@ -43,11 +40,10 @@ namespace UniversityApiBE.Controllers
         [HttpGet("geIndexByCourseId{courseId:int}")]
         public async Task<ActionResult<IndexDto>> getIndexByCourseId(int courseId)
         {
-            var index = await _indexesService.FilterIndexByCourseAsync(courseId);
+            var index = await _indexesService.FilterIndexByCourse(courseId);
 
-            if(index == null)
-                return NotFound();  
-
+            if (index == null)
+                return NotFound();
 
             return Ok(_mapper.Map<IndexDto>(index));
         }

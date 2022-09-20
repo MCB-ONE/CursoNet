@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Core.Entities;
+using Core.Interfaces;
 
 namespace Core.Specifications
 {

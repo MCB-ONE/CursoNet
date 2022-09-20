@@ -4,19 +4,16 @@ using Core.Entities;
 using Core.Interfaces;
 using UniversityApiBE.Dtos.Students;
 using Core.Specifications.StudentSpecification;
-using UniversityApiBE.Services.Students;
 
 namespace UniversityApiBE.Controllers
 {
     public class StudentsController : BaseApIController
     {
-        private readonly IGenericRepository<Student> _studentRepository;
         private readonly IStudentsService _studentService;
         private readonly IMapper _mapper;
 
-        public StudentsController(IGenericRepository<Student> studentRepository, IStudentsService studentService, IMapper mapper)
+        public StudentsController(IStudentsService studentService, IMapper mapper)
         {
-            _studentRepository = studentRepository;
             _studentService = studentService;
             _mapper = mapper;
         }
@@ -26,7 +23,7 @@ namespace UniversityApiBE.Controllers
         {
             var spec = new StudentWithCoursesSpecification();
 
-            var students = await _studentRepository.GetAllIdWithSpecAsync(spec);
+            var students = await _studentService.GetAllIdWithSpecAsync(spec);
 
             return _mapper.Map<List<StudentDto>>(students);
         }
@@ -35,7 +32,7 @@ namespace UniversityApiBE.Controllers
         public async Task<ActionResult<List<StudentDto>>> GetStudentsWithoutCourses()
         {
             
-            var students = await _studentService.FilterStudentsWithOutCoursesAsync();
+            var students = await _studentService.FilterStudentsWithOutCourses();
 
             return _mapper.Map<List<StudentDto>>(students);
         }
@@ -44,7 +41,7 @@ namespace UniversityApiBE.Controllers
         public async Task<ActionResult<StudentDto>> GetStudent(int id)
         {
             var spec = new StudentWithCoursesSpecification(id);
-            var student = await _studentRepository.GetByIdWithSpecAsync(spec);
+            var student = await _studentService.GetByIdWithSpecAsync(spec);
 
             return _mapper.Map<StudentDto>(student);
         }
@@ -53,7 +50,7 @@ namespace UniversityApiBE.Controllers
         public async Task<ActionResult<List<StudentDto>>> GetStudentsByCourse(int courseId)
         {
             
-            var students = await _studentService.FilterStudentsByCoursesAsync(courseId);
+            var students = await _studentService.FilterStudentsByCourses(courseId);
 
             if(students == null)
                 return NotFound();
@@ -75,7 +72,12 @@ namespace UniversityApiBE.Controllers
             studentUpdateDto.UpdatedAt = DateTime.Now;
             studentUpdateDto.UpdatedBy = studentUpdateDto.Name;
 
-            var result = await _studentService.UpdateStudentAsync(id, studentUpdateDto);
+            // Extraer array de ids de los nuevos cursos relacionados que llegan desde el cliente
+
+            var newCouresIds = studentUpdateDto.CoursesId;
+
+
+            var result = await _studentService.UpdateStudent(id, _mapper.Map<Student>(studentUpdateDto), newCouresIds);
 
             if (result == 0)
             {
@@ -91,7 +93,7 @@ namespace UniversityApiBE.Controllers
         {
             var student = _mapper.Map<Student>(studentCreateDto);
 
-            var result = await _studentRepository.Add(student);
+            var result = await _studentService.Add(student);
 
             if (result == 0)
             {
@@ -105,7 +107,7 @@ namespace UniversityApiBE.Controllers
         public async Task<ActionResult> DeleteStudent(int id)
         {
 
-            var result = await _studentRepository.Delete(id);
+            var result = await _studentService.Delete(id);
 
             if (result == 0)
             {

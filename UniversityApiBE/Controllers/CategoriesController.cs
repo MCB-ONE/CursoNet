@@ -4,8 +4,6 @@ using Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UniversityApiBE.Dtos.Categories;
-using UniversityApiBE.Services.Categories;
-using UniversityApiBE.Services.Students;
 
 namespace UniversityApiBE.Controllers
 {
@@ -13,10 +11,10 @@ namespace UniversityApiBE.Controllers
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        private readonly IGenericRepository<Category> _categoryRepository;
+        private readonly IGenericService<Category> _categoryRepository;
         private readonly IMapper _mapper;
 
-        public CategoriesController(IGenericRepository<Category> categoryRepository, IMapper mapper)
+        public CategoriesController(IGenericService<Category> categoryRepository, IMapper mapper)
         {
             _categoryRepository = categoryRepository;
             _mapper = mapper;
