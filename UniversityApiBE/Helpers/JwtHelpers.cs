@@ -5,6 +5,7 @@ using UniversityApiBE.Security;
 
 namespace UniversityApiBE.Helpers
 {
+    // Clase de ayuda con métodos para generar JWt tokens
     static class JwtHelpers
     {
         public static IEnumerable<Claim> GetClaims(this UserTokens userAccounts, Guid id)

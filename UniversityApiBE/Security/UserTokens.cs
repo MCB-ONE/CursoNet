@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace UniversityApiBE.Security
 {
+
+    // Esta clase permite instanciar un objeto JWT token apra el usuario que se haya logeado con éxito
     internal class UserTokens
     {
         public int Id { get; set; }
