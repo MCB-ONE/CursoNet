@@ -37,6 +37,8 @@ namespace UniversityApiBE.Controllers
             }
         };
 
+
+        // Ruta para hacer login y generar JWT a cliente
         [HttpPost]
         public IActionResult GetToken(UserLogins userLogins)
         {
@@ -78,7 +80,7 @@ namespace UniversityApiBE.Controllers
         }
 
 
-        // Ruta con autenticación
+        // Ruta test con autenticación
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public IActionResult GetUserList()
