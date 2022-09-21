@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Core.Entities;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using UniversityApiBE.Security;
@@ -19,12 +20,12 @@ namespace UniversityApiBE.Helpers
                 new Claim(ClaimTypes.Expiration, DateTime.UtcNow.AddDays(1).ToString("MM ddd dd yyyy HH:mm:ss tt"))
             };
 
-            if (userAccounts.UserName == "Admin")
+            if (userAccounts.Role == Roles.Admin)
             {
                 claims.Add(new Claim(ClaimTypes.Role, "Administrator"));
 
             }
-            else if (userAccounts.UserName == "User 1")
+            else if (userAccounts.Role == Roles.User)
             {
                 claims.Add(new Claim(ClaimTypes.Role, "User"));
                 claims.Add(new Claim("UserOnly", "User 1"));
@@ -74,6 +75,7 @@ namespace UniversityApiBE.Helpers
                 userToken.Token = new JwtSecurityTokenHandler().WriteToken(jwtToken);
                 userToken.UserName = model.UserName;
                 userToken.Id = model.Id;
+                userToken.Role = model.Role;
                 userToken.GuidId = Id;
 
                 return userToken;

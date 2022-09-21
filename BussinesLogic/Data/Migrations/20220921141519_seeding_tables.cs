@@ -14,11 +14,11 @@ namespace BussinesLogic.Data.Migrations
                 columns: new[] { "Id", "CreatedAt", "CreatedBy", "DeletedAt", "DeletedBy", "IsDeleted", "Name", "UpdatedAt", "UpdatedBy" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2022, 9, 13, 17, 6, 21, 15, DateTimeKind.Local).AddTicks(1766), "Seeder", null, null, false, "Frontend", null, null },
-                    { 2, new DateTime(2022, 9, 13, 17, 6, 21, 15, DateTimeKind.Local).AddTicks(1766), "Seeder", null, null, false, "Backend", null, null },
-                    { 3, new DateTime(2022, 9, 13, 17, 6, 21, 15, DateTimeKind.Local).AddTicks(1766), "Seeder", null, null, false, "Framework", null, null },
-                    { 4, new DateTime(2022, 9, 13, 17, 6, 21, 15, DateTimeKind.Local).AddTicks(1766), "Seeder", null, null, false, "Testing", null, null },
-                    { 5, new DateTime(2022, 9, 13, 17, 6, 21, 15, DateTimeKind.Local).AddTicks(1766), "Seeder", null, null, false, "Movile", null, null }
+                    { 1, new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458), "Seeder", null, null, false, "Frontend", null, null },
+                    { 2, new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458), "Seeder", null, null, false, "Backend", null, null },
+                    { 3, new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458), "Seeder", null, null, false, "Framework", null, null },
+                    { 4, new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458), "Seeder", null, null, false, "Testing", null, null },
+                    { 5, new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458), "Seeder", null, null, false, "Movile", null, null }
                 });
 
             migrationBuilder.InsertData(
@@ -26,19 +26,20 @@ namespace BussinesLogic.Data.Migrations
                 columns: new[] { "Id", "CreatedAt", "CreatedBy", "DeletedAt", "DeletedBy", "IsDeleted", "Level", "LongDescription", "Name", "ShortDescription", "UpdatedAt", "UpdatedBy" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2022, 9, 13, 17, 6, 21, 15, DateTimeKind.Local).AddTicks(1766), "Seeder", null, null, false, 0, "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?", "Javascript Básico", "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore", null, null },
-                    { 2, new DateTime(2022, 9, 13, 17, 6, 21, 15, DateTimeKind.Local).AddTicks(1766), "Seeder", null, null, false, 2, "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?", "Javascript Avanzado", "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore", null, null },
-                    { 3, new DateTime(2022, 9, 13, 17, 6, 21, 15, DateTimeKind.Local).AddTicks(1766), "Seeder", null, null, false, 1, "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?", "PHP", "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore", null, null }
+                    { 1, new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458), "Seeder", null, null, false, 0, "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?", "Javascript Básico", "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore", null, null },
+                    { 2, new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458), "Seeder", null, null, false, 2, "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?", "Javascript Avanzado", "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore", null, null },
+                    { 3, new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458), "Seeder", null, null, false, 1, "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?", "PHP", "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore", null, null }
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "CreatedAt", "CreatedBy", "DeletedAt", "DeletedBy", "Email", "IsDeleted", "LastName", "Name", "Password", "UpdatedAt", "UpdatedBy" },
+                columns: new[] { "Id", "CreatedAt", "CreatedBy", "DeletedAt", "DeletedBy", "Email", "IsDeleted", "LastName", "Name", "Password", "Rol", "UpdatedAt", "UpdatedBy" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2022, 9, 13, 17, 6, 21, 15, DateTimeKind.Local).AddTicks(1766), "Seeder", null, null, "andresain@gmail.com", false, "Sainz", "Andrés", "saiaie88721", null, null },
-                    { 2, new DateTime(2022, 9, 13, 17, 6, 21, 15, DateTimeKind.Local).AddTicks(1766), "Seeder", null, null, "lopez_ch@gmail.com", false, "Lopez", "Chritian", "lopse399al", null, null },
-                    { 3, new DateTime(2022, 9, 13, 17, 6, 21, 15, DateTimeKind.Local).AddTicks(1766), "Seeder", null, null, "marrruiz@gmail.com", false, "Ruiz", "Marc", "ruimaer438", null, null }
+                    { 1, new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458), "Seeder", null, null, "andresain@gmail.com", false, "Sainz", "Andrés", "saiaie88721", 1, null, null },
+                    { 2, new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458), "Seeder", null, null, "lopez_ch@gmail.com", false, "Lopez", "Chritian", "lopse399al", 1, null, null },
+                    { 3, new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458), "Seeder", null, null, "marrruiz@gmail.com", false, "Ruiz", "Marc", "ruimaer438", 1, null, null },
+                    { 4, new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458), "Seeder", null, null, "admin@gmail.com", false, "Test", "Test Admin", "admin1234", 0, null, null }
                 });
 
             migrationBuilder.InsertData(
@@ -56,9 +57,9 @@ namespace BussinesLogic.Data.Migrations
                 columns: new[] { "Id", "CourseId", "CreatedAt", "CreatedBy", "DeletedAt", "DeletedBy", "IsDeleted", "List", "UpdatedAt", "UpdatedBy" },
                 values: new object[,]
                 {
-                    { 1, 1, new DateTime(2022, 9, 13, 17, 6, 21, 15, DateTimeKind.Local).AddTicks(2174), "Seeder", null, null, false, "Index Javascript Básico", null, null },
-                    { 2, 2, new DateTime(2022, 9, 13, 17, 6, 21, 15, DateTimeKind.Local).AddTicks(2178), "Seeder", null, null, false, "Index Javascript Avanzado", null, null },
-                    { 3, 3, new DateTime(2022, 9, 13, 17, 6, 21, 15, DateTimeKind.Local).AddTicks(2181), "Seeder", null, null, false, "Index PHP", null, null }
+                    { 1, 1, new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1695), "Seeder", null, null, false, "Index Javascript Básico", null, null },
+                    { 2, 2, new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1698), "Seeder", null, null, false, "Index Javascript Avanzado", null, null },
+                    { 3, 3, new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1700), "Seeder", null, null, false, "Index PHP", null, null }
                 });
 
             migrationBuilder.InsertData(
@@ -66,9 +67,9 @@ namespace BussinesLogic.Data.Migrations
                 columns: new[] { "Id", "Birthay", "CreatedAt", "CreatedBy", "DeletedAt", "DeletedBy", "IsDeleted", "LastName", "Name", "UpdatedAt", "UpdatedBy", "UserId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(1990, 2, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 9, 13, 17, 6, 21, 15, DateTimeKind.Local).AddTicks(1766), "Seeder", null, null, false, "Sainz", "Andrés", null, null, 1 },
-                    { 2, new DateTime(1992, 6, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 9, 13, 17, 6, 21, 15, DateTimeKind.Local).AddTicks(1766), "Seeder", null, null, false, "Lopez", "Chritian", null, null, 2 },
-                    { 3, new DateTime(1990, 1, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 9, 13, 17, 6, 21, 15, DateTimeKind.Local).AddTicks(1766), "Seeder", null, null, false, "Ruiz", "Marc", null, null, 3 }
+                    { 1, new DateTime(1990, 2, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458), "Seeder", null, null, false, "Sainz", "Andrés", null, null, 1 },
+                    { 2, new DateTime(1992, 6, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458), "Seeder", null, null, false, "Lopez", "Chritian", null, null, 2 },
+                    { 3, new DateTime(1990, 1, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458), "Seeder", null, null, false, "Ruiz", "Marc", null, null, 3 }
                 });
 
             migrationBuilder.InsertData(
@@ -155,6 +156,11 @@ namespace BussinesLogic.Data.Migrations
                 table: "Students",
                 keyColumn: "Id",
                 keyValue: 3);
+
+            migrationBuilder.DeleteData(
+                table: "Users",
+                keyColumn: "Id",
+                keyValue: 4);
 
             migrationBuilder.DeleteData(
                 table: "Categories",

@@ -19,6 +19,8 @@ namespace Core.Entities
         [Required]
         public string Password { get; set; } = string.Empty;
 
+        public Roles Rol { get; set; } = Roles.User;
+
         public Student? Student { get; set; }
     }
 }

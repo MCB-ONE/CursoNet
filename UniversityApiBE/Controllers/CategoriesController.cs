@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UniversityApiBE.Dtos.Categories;
@@ -37,6 +39,7 @@ namespace UniversityApiBE.Controllers
 
 
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<ActionResult<CategoryDto>> PutCategory(int id, CategoryDto categoryDto)
         {
             if (id != categoryDto.Id)
@@ -60,6 +63,7 @@ namespace UniversityApiBE.Controllers
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<ActionResult<CategoryDto>> PostCategory(CategoryDto categoryDto)
         {
             var category = _mapper.Map<Category>(categoryDto);
@@ -77,6 +81,7 @@ namespace UniversityApiBE.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<ActionResult> DeleteCategory(int id)
         {
 

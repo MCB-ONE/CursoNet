@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Core.Entities;
 using Core.Interfaces;
 using UniversityApiBE.Dtos.Students;
@@ -42,6 +44,8 @@ namespace UniversityApiBE.Controllers
         {
             var spec = new StudentWithCoursesSpecification(id);
             var student = await _studentService.GetByIdWithSpecAsync(spec);
+            if (student == null)
+                return NotFound();
 
             return _mapper.Map<StudentDto>(student);
         }
@@ -61,6 +65,7 @@ namespace UniversityApiBE.Controllers
 
 
         [HttpPut("UpdateStudent/{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<ActionResult<StudentUpdateDto>> UpdateStudent(int id, StudentUpdateDto studentUpdateDto)
         {
 
@@ -89,6 +94,7 @@ namespace UniversityApiBE.Controllers
 
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<ActionResult<StudentDto>> PostStudent(StudentCreateDto studentCreateDto)
         {
             var student = _mapper.Map<Student>(studentCreateDto);
@@ -104,6 +110,7 @@ namespace UniversityApiBE.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<ActionResult> DeleteStudent(int id)
         {
 

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BussinesLogic.Data.Migrations
 {
     [DbContext(typeof(UniversityDBContext))]
-    [Migration("20220913150305_create_initial_tables_and_relationships")]
-    partial class create_initial_tables_and_relationships
+    [Migration("20220921141519_seeding_tables")]
+    partial class seeding_tables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -37,6 +37,23 @@ namespace BussinesLogic.Data.Migrations
                     b.HasIndex("CoursesId");
 
                     b.ToTable("CategoryCourse");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoriesId = 1,
+                            CoursesId = 1
+                        },
+                        new
+                        {
+                            CategoriesId = 3,
+                            CoursesId = 2
+                        },
+                        new
+                        {
+                            CategoriesId = 2,
+                            CoursesId = 3
+                        });
                 });
 
             modelBuilder.Entity("Core.Entities.Category", b =>
@@ -76,6 +93,48 @@ namespace BussinesLogic.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458),
+                            CreatedBy = "Seeder",
+                            IsDeleted = false,
+                            Name = "Frontend"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458),
+                            CreatedBy = "Seeder",
+                            IsDeleted = false,
+                            Name = "Backend"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458),
+                            CreatedBy = "Seeder",
+                            IsDeleted = false,
+                            Name = "Framework"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedAt = new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458),
+                            CreatedBy = "Seeder",
+                            IsDeleted = false,
+                            Name = "Testing"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CreatedAt = new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458),
+                            CreatedBy = "Seeder",
+                            IsDeleted = false,
+                            Name = "Movile"
+                        });
                 });
 
             modelBuilder.Entity("Core.Entities.Course", b =>
@@ -128,6 +187,41 @@ namespace BussinesLogic.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Courses");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458),
+                            CreatedBy = "Seeder",
+                            IsDeleted = false,
+                            Level = 0,
+                            LongDescription = "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?",
+                            Name = "Javascript Básico",
+                            ShortDescription = "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458),
+                            CreatedBy = "Seeder",
+                            IsDeleted = false,
+                            Level = 2,
+                            LongDescription = "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?",
+                            Name = "Javascript Avanzado",
+                            ShortDescription = "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458),
+                            CreatedBy = "Seeder",
+                            IsDeleted = false,
+                            Level = 1,
+                            LongDescription = "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?",
+                            Name = "PHP",
+                            ShortDescription = "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore"
+                        });
                 });
 
             modelBuilder.Entity("Core.Entities.Index", b =>
@@ -174,6 +268,35 @@ namespace BussinesLogic.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("Indexes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CourseId = 1,
+                            CreatedAt = new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1695),
+                            CreatedBy = "Seeder",
+                            IsDeleted = false,
+                            List = "Index Javascript Básico"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CourseId = 2,
+                            CreatedAt = new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1698),
+                            CreatedBy = "Seeder",
+                            IsDeleted = false,
+                            List = "Index Javascript Avanzado"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CourseId = 3,
+                            CreatedAt = new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1700),
+                            CreatedBy = "Seeder",
+                            IsDeleted = false,
+                            List = "Index PHP"
+                        });
                 });
 
             modelBuilder.Entity("Core.Entities.Student", b =>
@@ -226,6 +349,41 @@ namespace BussinesLogic.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("Students");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Birthay = new DateTime(1990, 2, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458),
+                            CreatedBy = "Seeder",
+                            IsDeleted = false,
+                            LastName = "Sainz",
+                            Name = "Andrés",
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Birthay = new DateTime(1992, 6, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458),
+                            CreatedBy = "Seeder",
+                            IsDeleted = false,
+                            LastName = "Lopez",
+                            Name = "Chritian",
+                            UserId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Birthay = new DateTime(1990, 1, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458),
+                            CreatedBy = "Seeder",
+                            IsDeleted = false,
+                            LastName = "Ruiz",
+                            Name = "Marc",
+                            UserId = 3
+                        });
                 });
 
             modelBuilder.Entity("Core.Entities.User", b =>
@@ -251,7 +409,7 @@ namespace BussinesLogic.Data.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -270,6 +428,9 @@ namespace BussinesLogic.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Rol")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -278,7 +439,60 @@ namespace BussinesLogic.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458),
+                            CreatedBy = "Seeder",
+                            Email = "andresain@gmail.com",
+                            IsDeleted = false,
+                            LastName = "Sainz",
+                            Name = "Andrés",
+                            Password = "saiaie88721",
+                            Rol = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458),
+                            CreatedBy = "Seeder",
+                            Email = "lopez_ch@gmail.com",
+                            IsDeleted = false,
+                            LastName = "Lopez",
+                            Name = "Chritian",
+                            Password = "lopse399al",
+                            Rol = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458),
+                            CreatedBy = "Seeder",
+                            Email = "marrruiz@gmail.com",
+                            IsDeleted = false,
+                            LastName = "Ruiz",
+                            Name = "Marc",
+                            Password = "ruimaer438",
+                            Rol = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedAt = new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458),
+                            CreatedBy = "Seeder",
+                            Email = "admin@gmail.com",
+                            IsDeleted = false,
+                            LastName = "Test",
+                            Name = "Test Admin",
+                            Password = "admin1234",
+                            Rol = 0
+                        });
                 });
 
             modelBuilder.Entity("CourseStudent", b =>
@@ -294,6 +508,33 @@ namespace BussinesLogic.Data.Migrations
                     b.HasIndex("StudentsId");
 
                     b.ToTable("CourseStudent");
+
+                    b.HasData(
+                        new
+                        {
+                            CoursesId = 1,
+                            StudentsId = 1
+                        },
+                        new
+                        {
+                            CoursesId = 2,
+                            StudentsId = 1
+                        },
+                        new
+                        {
+                            CoursesId = 3,
+                            StudentsId = 1
+                        },
+                        new
+                        {
+                            CoursesId = 1,
+                            StudentsId = 2
+                        },
+                        new
+                        {
+                            CoursesId = 2,
+                            StudentsId = 2
+                        });
                 });
 
             modelBuilder.Entity("CategoryCourse", b =>

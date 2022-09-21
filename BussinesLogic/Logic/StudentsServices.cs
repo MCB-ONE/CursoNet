@@ -45,7 +45,7 @@ namespace BussinesLogic.Logic
 
             if (studentDb == null)
             {
-                throw new ArgumentNullException("entity");
+                throw new ArgumentNullException("No se ha encontrado el estudiante a actualizar");
             }
 
             // Actualizamos las props con las que llegan en la request no las relaciones
@@ -54,17 +54,23 @@ namespace BussinesLogic.Logic
             if (newCouresIds.Count > 0)
             {
                 // Eliminamos las relaciones actuales del registro de la bdd
-                var coursesToRemove = studentDb.Courses.ToList();
-                foreach (var oldCourse in coursesToRemove)
-                    studentDb.Courses.Remove(oldCourse);
+                if(studentDb.Courses.Count > 0)
+                {
+                    var coursesToRemove = studentDb.Courses.ToList();
+                    foreach (var oldCourse in coursesToRemove)
+                        studentDb.Courses.Remove(oldCourse);
+                }
 
 
                 // Añadimos todas las relaciones que llegan des de el cliente
-                
-
                 var coursesToAdd = await _context.Courses
                     .Where(c => newCouresIds.Contains(c.Id))
                     .ToListAsync();
+                if(coursesToAdd.Count == 0)
+                {
+                    throw new Exception("Hay Ids de los cursos a actualizar que no existen");
+                }
+                
                 foreach (var courseToAdd in coursesToAdd)
                     studentDb.Courses.Add(courseToAdd);
 

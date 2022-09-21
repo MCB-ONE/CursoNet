@@ -96,7 +96,7 @@ namespace BussinesLogic.Data.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2022, 9, 13, 17, 6, 21, 15, DateTimeKind.Local).AddTicks(1766),
+                            CreatedAt = new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458),
                             CreatedBy = "Seeder",
                             IsDeleted = false,
                             Name = "Frontend"
@@ -104,7 +104,7 @@ namespace BussinesLogic.Data.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2022, 9, 13, 17, 6, 21, 15, DateTimeKind.Local).AddTicks(1766),
+                            CreatedAt = new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458),
                             CreatedBy = "Seeder",
                             IsDeleted = false,
                             Name = "Backend"
@@ -112,7 +112,7 @@ namespace BussinesLogic.Data.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2022, 9, 13, 17, 6, 21, 15, DateTimeKind.Local).AddTicks(1766),
+                            CreatedAt = new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458),
                             CreatedBy = "Seeder",
                             IsDeleted = false,
                             Name = "Framework"
@@ -120,7 +120,7 @@ namespace BussinesLogic.Data.Migrations
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2022, 9, 13, 17, 6, 21, 15, DateTimeKind.Local).AddTicks(1766),
+                            CreatedAt = new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458),
                             CreatedBy = "Seeder",
                             IsDeleted = false,
                             Name = "Testing"
@@ -128,7 +128,7 @@ namespace BussinesLogic.Data.Migrations
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2022, 9, 13, 17, 6, 21, 15, DateTimeKind.Local).AddTicks(1766),
+                            CreatedAt = new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458),
                             CreatedBy = "Seeder",
                             IsDeleted = false,
                             Name = "Movile"
@@ -190,7 +190,7 @@ namespace BussinesLogic.Data.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2022, 9, 13, 17, 6, 21, 15, DateTimeKind.Local).AddTicks(1766),
+                            CreatedAt = new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458),
                             CreatedBy = "Seeder",
                             IsDeleted = false,
                             Level = 0,
@@ -201,7 +201,7 @@ namespace BussinesLogic.Data.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2022, 9, 13, 17, 6, 21, 15, DateTimeKind.Local).AddTicks(1766),
+                            CreatedAt = new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458),
                             CreatedBy = "Seeder",
                             IsDeleted = false,
                             Level = 2,
@@ -212,7 +212,7 @@ namespace BussinesLogic.Data.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2022, 9, 13, 17, 6, 21, 15, DateTimeKind.Local).AddTicks(1766),
+                            CreatedAt = new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458),
                             CreatedBy = "Seeder",
                             IsDeleted = false,
                             Level = 1,
@@ -272,7 +272,7 @@ namespace BussinesLogic.Data.Migrations
                         {
                             Id = 1,
                             CourseId = 1,
-                            CreatedAt = new DateTime(2022, 9, 13, 17, 6, 21, 15, DateTimeKind.Local).AddTicks(2174),
+                            CreatedAt = new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1695),
                             CreatedBy = "Seeder",
                             IsDeleted = false,
                             List = "Index Javascript Básico"
@@ -281,7 +281,7 @@ namespace BussinesLogic.Data.Migrations
                         {
                             Id = 2,
                             CourseId = 2,
-                            CreatedAt = new DateTime(2022, 9, 13, 17, 6, 21, 15, DateTimeKind.Local).AddTicks(2178),
+                            CreatedAt = new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1698),
                             CreatedBy = "Seeder",
                             IsDeleted = false,
                             List = "Index Javascript Avanzado"
@@ -290,7 +290,7 @@ namespace BussinesLogic.Data.Migrations
                         {
                             Id = 3,
                             CourseId = 3,
-                            CreatedAt = new DateTime(2022, 9, 13, 17, 6, 21, 15, DateTimeKind.Local).AddTicks(2181),
+                            CreatedAt = new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1700),
                             CreatedBy = "Seeder",
                             IsDeleted = false,
                             List = "Index PHP"
@@ -353,7 +353,7 @@ namespace BussinesLogic.Data.Migrations
                         {
                             Id = 1,
                             Birthay = new DateTime(1990, 2, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedAt = new DateTime(2022, 9, 13, 17, 6, 21, 15, DateTimeKind.Local).AddTicks(1766),
+                            CreatedAt = new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458),
                             CreatedBy = "Seeder",
                             IsDeleted = false,
                             LastName = "Sainz",
@@ -364,7 +364,7 @@ namespace BussinesLogic.Data.Migrations
                         {
                             Id = 2,
                             Birthay = new DateTime(1992, 6, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedAt = new DateTime(2022, 9, 13, 17, 6, 21, 15, DateTimeKind.Local).AddTicks(1766),
+                            CreatedAt = new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458),
                             CreatedBy = "Seeder",
                             IsDeleted = false,
                             LastName = "Lopez",
@@ -375,7 +375,7 @@ namespace BussinesLogic.Data.Migrations
                         {
                             Id = 3,
                             Birthay = new DateTime(1990, 1, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedAt = new DateTime(2022, 9, 13, 17, 6, 21, 15, DateTimeKind.Local).AddTicks(1766),
+                            CreatedAt = new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458),
                             CreatedBy = "Seeder",
                             IsDeleted = false,
                             LastName = "Ruiz",
@@ -407,7 +407,7 @@ namespace BussinesLogic.Data.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -426,6 +426,9 @@ namespace BussinesLogic.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Rol")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -434,41 +437,59 @@ namespace BussinesLogic.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
                     b.ToTable("Users");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2022, 9, 13, 17, 6, 21, 15, DateTimeKind.Local).AddTicks(1766),
+                            CreatedAt = new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458),
                             CreatedBy = "Seeder",
                             Email = "andresain@gmail.com",
                             IsDeleted = false,
                             LastName = "Sainz",
                             Name = "Andrés",
-                            Password = "saiaie88721"
+                            Password = "saiaie88721",
+                            Rol = 1
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2022, 9, 13, 17, 6, 21, 15, DateTimeKind.Local).AddTicks(1766),
+                            CreatedAt = new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458),
                             CreatedBy = "Seeder",
                             Email = "lopez_ch@gmail.com",
                             IsDeleted = false,
                             LastName = "Lopez",
                             Name = "Chritian",
-                            Password = "lopse399al"
+                            Password = "lopse399al",
+                            Rol = 1
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2022, 9, 13, 17, 6, 21, 15, DateTimeKind.Local).AddTicks(1766),
+                            CreatedAt = new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458),
                             CreatedBy = "Seeder",
                             Email = "marrruiz@gmail.com",
                             IsDeleted = false,
                             LastName = "Ruiz",
                             Name = "Marc",
-                            Password = "ruimaer438"
+                            Password = "ruimaer438",
+                            Rol = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedAt = new DateTime(2022, 9, 21, 16, 15, 19, 383, DateTimeKind.Local).AddTicks(1458),
+                            CreatedBy = "Seeder",
+                            Email = "admin@gmail.com",
+                            IsDeleted = false,
+                            LastName = "Test",
+                            Name = "Test Admin",
+                            Password = "admin1234",
+                            Rol = 0
                         });
                 });
 

@@ -3,6 +3,8 @@ using BussinesLogic.Data;
 using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications.Courses;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UniversityApiBE.Dtos.Courses;
@@ -79,6 +81,7 @@ namespace UniversityApiBE.Controllers
          */
 
         [HttpPut("{id:int}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<ActionResult<CourseDto>> UpdateCourse(int id, CourseUpdateDto dto)
         {
 
@@ -104,6 +107,7 @@ namespace UniversityApiBE.Controllers
 
         // Crear curso con categorias ya existentes
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<ActionResult<CourseDto>> Post(CourseCreateDto courseCreateDto)
         {
 

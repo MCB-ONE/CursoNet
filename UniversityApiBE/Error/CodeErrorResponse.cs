@@ -19,10 +19,12 @@ namespace UniversityApiBE.Error
         {
             return statusCode switch
             {
-                400 => "Request enviado con errores",
+                400 => "Request enviada con errores",
                 401 => "No tiene autorización para acceder este recurso",
                 404 => "Recurso no encontrado",
-                500 => "Se han producido errores en el servidor",_=> null
+                403 => "No tiene autoización para acceder a este recurso",
+                500 => "Se han producido errores en el servidor",
+                _=> null
             };
 
         }

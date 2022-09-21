@@ -2,6 +2,8 @@
 using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications.UserSpecifications;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UniversityApiBE.Dtos.Users;
 using UniversityApiBE.Error;
@@ -21,6 +23,7 @@ namespace UniversityApiBE.Controllers
         // GET: api/Users
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<UserDto>), 200)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetUsersAll()
         {
             var spec = new UserWithStudentSpecification();
@@ -37,6 +40,7 @@ namespace UniversityApiBE.Controllers
         //GET: api/Users/5
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(UserDto), 200)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<ActionResult<UserDto>> GetUser(int id)
         {
 
@@ -57,6 +61,7 @@ namespace UniversityApiBE.Controllers
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<ActionResult<UserDto>> PutUser(int id, UserUpdateDto userUpdateDto)
         {
             if (id != userUpdateDto.Id)
@@ -83,6 +88,7 @@ namespace UniversityApiBE.Controllers
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<ActionResult<UserDto>> PostUser(UserCreateDto userCreateDto)
         {
             var user = _mapper.Map<User>(userCreateDto);
@@ -104,6 +110,7 @@ namespace UniversityApiBE.Controllers
 
         // DELETE: api/Users/5
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<ActionResult> DeleteUser(int id)
         {
 

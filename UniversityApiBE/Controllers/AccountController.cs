@@ -53,21 +53,23 @@ namespace UniversityApiBE.Controllers
             {
                 var token = new UserTokens();
                 // TODO Usar Linq y buscar busque en la lista de usuarios del contexto de la base de datos el usuario correcto
-                var valid = Logins.Any(user => user.Name.Equals(userLogins.UserName, StringComparison.OrdinalIgnoreCase));
+                // var valid = Logins.Any(user => user.Name.Equals(userLogins.UserName, StringComparison.OrdinalIgnoreCase));
                 /*
                  * Usando Linq, busque en la lista de usuarios del contexto de la base de datos
                  * Verifique tanto el nombre como la contraseña del usuario
                  * Obtenga la primera coincidencia
                  * */
                 
-
+                var valid = _context.Users.Any(u => u.Email == userLogins.Email);
 
 
                 // Si usuario es valido obtenemos el usuario y generamos el token
                 if (valid)
                 {
                     // Obtener usuario
-                    var user = Logins.FirstOrDefault(user => user.Name.Equals(userLogins.UserName, StringComparison.OrdinalIgnoreCase));
+                    //var user = Logins.FirstOrDefault(user => user.Name.Equals(userLogins.UserName, StringComparison.OrdinalIgnoreCase));
+                    var user = _context.Users.FirstOrDefault(u => u.Email == userLogins.Email
+                    && u.Password == userLogins.Password);
 
                     // GE¡enerar token
                     token = JwtHelpers.GenerateTokenKey(new UserTokens()
@@ -75,6 +77,7 @@ namespace UniversityApiBE.Controllers
                         UserName = user.Name,
                         EmailId = user.Email,
                         Id = user.Id,
+                        Role = user.Rol,
                         GuidId = Guid.NewGuid(),
 
                     }, _jwtSettings);
