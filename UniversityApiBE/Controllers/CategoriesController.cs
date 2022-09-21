@@ -7,9 +7,7 @@ using UniversityApiBE.Dtos.Categories;
 
 namespace UniversityApiBE.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class CategoriesController : ControllerBase
+    public class CategoriesController : BaseApIController
     {
         private readonly IGenericService<Category> _categoryRepository;
         private readonly IMapper _mapper;

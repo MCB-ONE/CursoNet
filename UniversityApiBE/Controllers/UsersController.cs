@@ -10,11 +10,11 @@ namespace UniversityApiBE.Controllers
 {
     public class UsersController : BaseApIController
     {
-        private readonly IGenericService<User> _userRepository;
+        private readonly IGenericService<User> _userService;
         private readonly IMapper _mapper;
         public UsersController(IGenericService<User> userRepository, IMapper mapper)
         {
-            _userRepository = userRepository;
+            _userService = userRepository;
             _mapper = mapper;
         }
 
@@ -23,13 +23,13 @@ namespace UniversityApiBE.Controllers
         [ProducesResponseType(typeof(IEnumerable<UserDto>), 200)]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetUsersAll()
         {
-            //if (_userRepository.Users == null)
-            //{
-            //    return NotFound();
-            //}
             var spec = new UserWithStudentSpecification();
 
-            var users = await _userRepository.GetAllIdWithSpecAsync(spec);
+            var users = await _userService.GetAllIdWithSpecAsync(spec);
+            if (users == null)
+            {
+                return NotFound(new CodeErrorResponse(404, $"No se han encontrado usuarios."));
+            }
 
             return _mapper.Map<List<UserDto>>(users); 
         }
@@ -39,16 +39,12 @@ namespace UniversityApiBE.Controllers
         [ProducesResponseType(typeof(UserDto), 200)]
         public async Task<ActionResult<UserDto>> GetUser(int id)
         {
-            //if (_context.Users == null)
-            //{
-            //    return NotFound();
-            //}
 
             // spec => deve incluir la lógica de la condición de la consulta y las relaciones entre las entidades
             // ejemplo de relación => relación entre user y student
             var spec = new UserWithStudentSpecification(id);
 
-            var user = await _userRepository.GetByIdWithSpecAsync(spec);
+            var user = await _userService.GetByIdWithSpecAsync(spec);
 
             if (user == null)
             {
@@ -65,17 +61,18 @@ namespace UniversityApiBE.Controllers
         {
             if (id != userUpdateDto.Id)
             {
-                return BadRequest("El id de la request y el id del usuario a actualizar no coinciden");
+                return BadRequest(new CodeErrorResponse(400, $"El id ({id}) de la request y el id ({userUpdateDto.Id}) del usuario a actualizar no coinciden"));
             }
 
             userUpdateDto.UpdatedAt = DateTime.Now;
             userUpdateDto.UpdatedBy = "Admin";
 
-           var result = await _userRepository.Update(_mapper.Map<User>(userUpdateDto));
+           var result = await _userService.Update(_mapper.Map<User>(userUpdateDto));
             
             if(result == 0)
             {
                 throw new Exception("El usuario no se ha podido actualizar.");
+                return BadRequest(new CodeErrorResponse(400, $"El id ({id}) de la request y el id ({userUpdateDto.Id}) del usuario a actualizar no coinciden"));
             }
 
             var userUpdated = _mapper.Map<UserDto>(userUpdateDto);
@@ -90,7 +87,7 @@ namespace UniversityApiBE.Controllers
         {
             var user = _mapper.Map<User>(userCreateDto);
 
-            var result = await _userRepository.Add(user);
+            var result = await _userService.Add(user);
 
             if (result == 0)
             {
@@ -110,7 +107,7 @@ namespace UniversityApiBE.Controllers
         public async Task<ActionResult> DeleteUser(int id)
         {
 
-            var result = await _userRepository.Delete(id);
+            var result = await _userService.Delete(id);
 
             if (result == 0)
             {
