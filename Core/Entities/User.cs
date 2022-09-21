@@ -3,6 +3,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Entities
 {
+    public enum Roles
+    {
+        Admin,
+        User
+    }
     public class User : BaseEntity
     {
         [Required, StringLength(100)]

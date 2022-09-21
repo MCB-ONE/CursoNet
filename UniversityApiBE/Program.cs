@@ -3,10 +3,12 @@ using BussinesLogic.Data;
 using BussinesLogic.Logic;
 using Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 using UniversityApiBE.Dtos.Students;
 using UniversityApiBE.Dtos.Users;
 using UniversityApiBE.Middleware;
+using UniversityApiBE.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,12 +23,11 @@ builder.Services.AddDbContext<UniversityDBContext>(options => options.UseSqlServ
 
 
 //6. Añadir Jwt Autorization service
-// TODO
-//builder.Services.AddJwtTokenServices(builder.Configuration);
+builder.Services.AddJwtTokenServices(builder.Configuration);
 
 // Add services to the container.
 // Configuramos los controladores para que ignoren los posibles ciclos de entidades anidadas/ relacionadas
-builder.Services.AddControllers().AddJsonOptions(options => 
+builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 // 4. Añadir servicios personalizados (carpeta services)
@@ -37,7 +38,11 @@ builder.Services.AddScoped<IStudentsService, StudentsServices>();
 builder.Services.AddScoped<ICoursesServices, CoursesServices>();
 builder.Services.AddScoped<IIndexesService, IndexesService>();
 
-
+// 8. Añadir politica de autorización
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("UserOnlyPolicy", policy => policy.RequireClaim("UserOnly", "User1"));
+});
 
 
 // 4.2 Servicio automapper
@@ -48,8 +53,35 @@ builder.Services.AddAutoMapper(typeof(StudentProfiles));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
-// 8 TODO: Configurar Swagger para que tenga encuenta la autorización
-builder.Services.AddSwaggerGen();
+// 9 Configurar Swagger para que tenga encuenta la autorización
+builder.Services.AddSwaggerGen(options =>
+{
+    // Definimos la seguridad
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorizaion",
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "JWT Authorization Header using Bearer Scheme"
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[]{}
+        }
+    });
+});
 
 
 // 5. Habilitar CORS (Que entornos, que tipo de métodos y cabeceras pueden acceder ala API y enviar peticiones
@@ -82,7 +114,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
- 
+
 // Aplicar CORS a la app
 app.UseCors("CorsPolicity");
 

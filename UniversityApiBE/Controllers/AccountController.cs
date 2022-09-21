@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using UniversityApiBE.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using BussinesLogic.Data;
 
 namespace UniversityApiBE.Controllers
 {
@@ -12,13 +13,18 @@ namespace UniversityApiBE.Controllers
     public class AccountController : ControllerBase
     {
         private readonly JwtSettings _jwtSettings;
+        private readonly UniversityDBContext _context;
 
-        public AccountController(JwtSettings jwtSettings)
+        public AccountController(JwtSettings jwtSettings, UniversityDBContext context)
         {
             _jwtSettings = jwtSettings;
+            _context = context;
         }
 
-        // Función test para obtener usuarios que pueda hacer loggin
+
+
+        // Usuarios de exemplo
+        // TODO: Cambiar por usuarios reales de la bdd
         private IEnumerable<User> Logins = new List<User>()
         {
             new User()
@@ -48,6 +54,13 @@ namespace UniversityApiBE.Controllers
                 var token = new UserTokens();
                 // TODO Usar Linq y buscar busque en la lista de usuarios del contexto de la base de datos el usuario correcto
                 var valid = Logins.Any(user => user.Name.Equals(userLogins.UserName, StringComparison.OrdinalIgnoreCase));
+                /*
+                 * Usando Linq, busque en la lista de usuarios del contexto de la base de datos
+                 * Verifique tanto el nombre como la contraseña del usuario
+                 * Obtenga la primera coincidencia
+                 * */
+                
+
 
 
                 // Si usuario es valido obtenemos el usuario y generamos el token
