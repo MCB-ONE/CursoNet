@@ -5,6 +5,7 @@ using UniversityApiBE.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using BussinesLogic.Data;
+using Microsoft.Extensions.Localization;
 
 namespace UniversityApiBE.Controllers
 {
@@ -14,12 +15,15 @@ namespace UniversityApiBE.Controllers
     {
         private readonly JwtSettings _jwtSettings;
         private readonly UniversityDBContext _context;
+        private readonly IStringLocalizer<AccountController> _stringLocalizer;
 
-        public AccountController(JwtSettings jwtSettings, UniversityDBContext context)
+        public AccountController(JwtSettings jwtSettings, UniversityDBContext context, IStringLocalizer<AccountController> stringLocalizer)
         {
             _jwtSettings = jwtSettings;
             _context = context;
+            _stringLocalizer = stringLocalizer;
         }
+
 
 
 
@@ -46,32 +50,27 @@ namespace UniversityApiBE.Controllers
 
         // Ruta para hacer login y generar JWT a cliente
         [HttpPost]
-        public IActionResult GetToken(UserLogins userLogins)
+        public IActionResult Login(UserLogins userLogins)
         {
             // Intentar generar el token y devolverlo
             try
             {
                 var token = new UserTokens();
-                // TODO Usar Linq y buscar busque en la lista de usuarios del contexto de la base de datos el usuario correcto
-                // var valid = Logins.Any(user => user.Name.Equals(userLogins.UserName, StringComparison.OrdinalIgnoreCase));
+
+                // Buscar texto de Bienvenida
+                var welcomeMessage = _stringLocalizer["WelcomeMessage"];
                 /*
                  * Usando Linq, busque en la lista de usuarios del contexto de la base de datos
                  * Verifique tanto el nombre como la contraseña del usuario
                  * Obtenga la primera coincidencia
                  * */
-                
-                var valid = _context.Users.Any(u => u.Email == userLogins.Email);
-
+                var user = _context.Users.FirstOrDefault(u => u.Email == userLogins.Email
+                && u.Password == userLogins.Password);
 
                 // Si usuario es valido obtenemos el usuario y generamos el token
-                if (valid)
+                if (user != null)
                 {
-                    // Obtener usuario
-                    //var user = Logins.FirstOrDefault(user => user.Name.Equals(userLogins.UserName, StringComparison.OrdinalIgnoreCase));
-                    var user = _context.Users.FirstOrDefault(u => u.Email == userLogins.Email
-                    && u.Password == userLogins.Password);
-
-                    // GE¡enerar token
+                    // Genenerar token
                     token = JwtHelpers.GenerateTokenKey(new UserTokens()
                     {
                         UserName = user.Name,
@@ -81,13 +80,15 @@ namespace UniversityApiBE.Controllers
                         GuidId = Guid.NewGuid(),
 
                     }, _jwtSettings);
-
                 }
                 else
                 {
                     return BadRequest("Credenciales incorrectas");
                 }
-                return Ok(token);
+                return Ok(new{
+                    Token = token,
+                    WelcomeMessage = welcomeMessage
+                });
             }
             catch(Exception ex)
             {
@@ -99,7 +100,7 @@ namespace UniversityApiBE.Controllers
         // Ruta test con autenticación
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
-        public IActionResult GetUserList()
+        public IActionResult TestProtectedGetUserList()
         {
             return Ok(Logins);
         }

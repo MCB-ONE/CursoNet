@@ -1,4 +1,3 @@
-//1. Usings para trabajar con EF
 using BussinesLogic.Data;
 using BussinesLogic.Logic;
 using Core.Interfaces;
@@ -24,6 +23,10 @@ builder.Services.AddDbContext<UniversityDBContext>(options => options.UseSqlServ
 
 //6. Añadir Jwt Autorization service
 builder.Services.AddJwtTokenServices(builder.Configuration);
+
+
+// 9. Localización
+builder.Services.AddLocalization(options => options.ResourcesPath= "Resources");
 
 // Add services to the container.
 // Configuramos los controladores para que ignoren los posibles ciclos de entidades anidadas/ relacionadas
@@ -97,6 +100,26 @@ builder.Services.AddCors(options =>
 
 //TODO: Controlar posible excepción?
 var app = builder.Build();
+
+
+// 9.1 CULTURAS SOPORTADAS
+// 9.1.1 Declaramos las culturas que vana ser soportadas
+var supportedCultures = new[]
+{
+    "en-US", // Inglés de Estados Unidos
+    "es-ES", // Español de España 
+    "fr-FR", // Francés de fRANCIA
+    "de-DE" // Alemán de Alemania
+};
+
+// 9.1.2 Setteamos todoas las culturas que son soportadas por la aplicación, cual viene por defecto y culturas soportadas por la Interfaz de Usuario (UI) por ejemplo usando MVC
+var localizationOptions = new RequestLocalizationOptions()
+    .SetDefaultCulture(supportedCultures[0]) // "en-US"=> por defecto
+    .AddSupportedCultures(supportedCultures)
+    .AddSupportedUICultures(supportedCultures);
+
+// 9.2 AÑADIR LA CONFIGURACIÓN DE LOCALIZACIÓN A LA APP
+app.UseRequestLocalization(localizationOptions);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
