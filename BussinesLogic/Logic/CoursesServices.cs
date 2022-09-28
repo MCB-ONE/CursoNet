@@ -49,8 +49,10 @@ namespace BussinesLogic.Logic
 
 
             var courses = await _context.Courses
+                                .Include(c => c.Students)
                                 .Include(c => c.Categories)
                                 .Where(c => c.Categories.Any(x => x.Id ==   categoryId)).ToListAsync();
+            
 
             return courses;
         }

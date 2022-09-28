@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BussinesLogic.Data.Migrations
 {
     [DbContext(typeof(UniversityDBContext))]
-    [Migration("20220921141500_create_initial_tables_and_relationships")]
+    [Migration("20220928141354_create_initial_tables_and_relationships")]
     partial class create_initial_tables_and_relationships
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
