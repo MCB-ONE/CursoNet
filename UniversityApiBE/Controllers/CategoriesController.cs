@@ -11,12 +11,12 @@ namespace UniversityApiBE.Controllers
 {
     public class CategoriesController : BaseApIController
     {
-        private readonly IGenericService<Category> _categoryRepository;
+        private readonly IGenericService<Category> _categoryService;
         private readonly IMapper _mapper;
 
         public CategoriesController(IGenericService<Category> categoryRepository, IMapper mapper)
         {
-            _categoryRepository = categoryRepository;
+            _categoryService = categoryRepository;
             _mapper = mapper;
         }
 
@@ -24,7 +24,7 @@ namespace UniversityApiBE.Controllers
         public async Task<ActionResult<List<CategoryDto>>> GetCategoriesAll()
         {
                 
-            var categoriess = await _categoryRepository.GetAllAsync();
+            var categoriess = await _categoryService.GetAllAsync();
 
             return _mapper.Map<List<CategoryDto>>(categoriess);
         }
@@ -32,7 +32,7 @@ namespace UniversityApiBE.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CategoryDto>> GetCategory(int id)
         {
-            var category = await _categoryRepository.GetByIdAsync(id);
+            var category = await _categoryService.GetByIdAsync(id);
 
             return _mapper.Map<CategoryDto>(category);
         }
@@ -50,7 +50,7 @@ namespace UniversityApiBE.Controllers
             categoryDto.UpdatedAt = DateTime.Now;
             categoryDto.UpdatedBy = categoryDto.Name;
 
-            var result = await _categoryRepository.Update(_mapper.Map<Category>(categoryDto));
+            var result = await _categoryService.Update(_mapper.Map<Category>(categoryDto));
 
             if (result == 0)
             {
@@ -68,7 +68,7 @@ namespace UniversityApiBE.Controllers
         {
             var category = _mapper.Map<Category>(categoryDto);
 
-            var result = await _categoryRepository.Add(category);
+            var result = await _categoryService.Add(category);
 
             if (result == 0)
             {
@@ -85,7 +85,7 @@ namespace UniversityApiBE.Controllers
         public async Task<ActionResult> DeleteCategory(int id)
         {
 
-            var result = await _categoryRepository.Delete(id);
+            var result = await _categoryService.Delete(id);
 
             if (result == 0)
             {

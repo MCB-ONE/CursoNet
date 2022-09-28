@@ -16,13 +16,16 @@ namespace UniversityApiBE.Controllers
         private readonly JwtSettings _jwtSettings;
         private readonly UniversityDBContext _context;
         private readonly IStringLocalizer<AccountController> _stringLocalizer;
+        private readonly ILogger<AccountController> _logger;
 
-        public AccountController(JwtSettings jwtSettings, UniversityDBContext context, IStringLocalizer<AccountController> stringLocalizer)
+        public AccountController(JwtSettings jwtSettings, UniversityDBContext context, IStringLocalizer<AccountController> stringLocalizer, ILogger<AccountController> logger)
         {
             _jwtSettings = jwtSettings;
             _context = context;
             _stringLocalizer = stringLocalizer;
+            _logger = logger;
         }
+
 
 
 
@@ -52,6 +55,12 @@ namespace UniversityApiBE.Controllers
         [HttpPost]
         public IActionResult Login(UserLogins userLogins)
         {
+            // Configurar loggings
+            _logger.LogWarning($"{nameof(AccountController)} - {nameof(Login)} - Warning Level Log");
+            _logger.LogError($"{nameof(AccountController)} - {nameof(Login)} - Error Level Log");
+            _logger.LogCritical($"{nameof(AccountController)} - {nameof(Login)} - Critical Log Level");
+
+
             // Intentar generar el token y devolverlo
             try
             {

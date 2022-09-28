@@ -3,21 +3,29 @@ using BussinesLogic.Data;
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Core.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace BussinesLogic.Logic
 {
     public class CoursesServices : GenericService<Course>, ICoursesServices
     {
         private readonly UniversityDBContext _context;
+        private readonly ILogger<CoursesServices> _logger;
 
-        public CoursesServices(UniversityDBContext context): base(context)
+        public CoursesServices(UniversityDBContext context, ILogger<CoursesServices> logger) : base(context, logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         public async Task<int> CreateCourseWhitCategories(Course course)
         {
+            // Configurar loggings
+            _logger.LogWarning($"{nameof(CoursesServices)} - {nameof(CreateCourseWhitCategories)} - Warning Level Log");
+            _logger.LogError($"{nameof(CoursesServices)} - {nameof(CreateCourseWhitCategories)} - Error Level Log");
+            _logger.LogCritical($"{nameof(CoursesServices)} - {nameof(CreateCourseWhitCategories)} - Critical Log Level");
+
+
             course.Categories.ForEach(cat => _context.Entry(cat).State = EntityState.Unchanged);
 
             //TODO: Agregar inserción index
@@ -29,6 +37,11 @@ namespace BussinesLogic.Logic
 
         public async Task<List<Course>> FilterCoursesByCategory(int categoryId)
         {
+            // Configurar loggings
+            _logger.LogWarning($"{nameof(CoursesServices)} - {nameof(FilterCoursesByCategory)} - Warning Level Log");
+            _logger.LogError($"{nameof(CoursesServices)} - {nameof(FilterCoursesByCategory)} - Error Level Log");
+            _logger.LogCritical($"{nameof(CoursesServices)} - {nameof(FilterCoursesByCategory)} - Critical Log Level");
+
             var categoryExist = await _context.Categories.AnyAsync(c => c.Id == categoryId);
 
             if (!categoryExist)
@@ -44,6 +57,12 @@ namespace BussinesLogic.Logic
 
         public async Task<List<Course>> FilterCoursesWhitoutIndex()
         {
+
+            // Configurar loggings
+            _logger.LogWarning($"{nameof(CoursesServices)} - {nameof(FilterCoursesWhitoutIndex)} - Warning Level Log");
+            _logger.LogError($"{nameof(CoursesServices)} - {nameof(FilterCoursesWhitoutIndex)} - Error Level Log");
+            _logger.LogCritical($"{nameof(CoursesServices)} - {nameof(FilterCoursesWhitoutIndex)} - Critical Log Level");
+
             return await _context.Courses
              .Where(c => c.Index == null)
              .Include(c => c.Categories).
@@ -54,6 +73,11 @@ namespace BussinesLogic.Logic
 
         public async Task<int> UpdateCourse(int courseId, Course courseUpdated, List<int> newCategoriesIds)
         {
+            // Configurar loggings
+            _logger.LogWarning($"{nameof(CoursesServices)} - {nameof(UpdateCourse)} - Warning Level Log");
+            _logger.LogError($"{nameof(CoursesServices)} - {nameof(UpdateCourse)} - Error Level Log");
+            _logger.LogCritical($"{nameof(CoursesServices)} - {nameof(UpdateCourse)} - Critical Log Level");
+
             // Recuperamos registro a actualizar
             var courseDb = _context.Courses
                             .Include(c => c.Categories)

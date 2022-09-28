@@ -2,20 +2,28 @@
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace BussinesLogic.Logic
 {
     public class StudentsServices : GenericService<Student>, IStudentsService
     {
         private readonly UniversityDBContext _context;
+        private readonly ILogger<StudentsServices> _logger;
 
-        public StudentsServices(UniversityDBContext context):  base(context)
+        public StudentsServices(UniversityDBContext context, ILogger<StudentsServices> logger): base(context, logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         public async Task<List<Student>> FilterStudentsByCourses(int courseId)
         {
+            // Configurar loggings
+            _logger.LogWarning($"{nameof(StudentsServices)} - {nameof(FilterStudentsByCourses)} - Warning Level Log");
+            _logger.LogError($"{nameof(StudentsServices)} - {nameof(FilterStudentsByCourses)} - Error Level Log");
+            _logger.LogCritical($"{nameof(StudentsServices)} - {nameof(FilterStudentsByCourses)} - Critical Log Level");
+
             var courseExist = await _context.Courses.AnyAsync(c => c.Id == courseId);
 
             if (!courseExist)
@@ -29,6 +37,11 @@ namespace BussinesLogic.Logic
 
         public async Task<List<Student>> FilterStudentsWithOutCourses()
         {
+            // Configurar loggings
+            _logger.LogWarning($"{nameof(StudentsServices)} - {nameof(UpdateStudent)} - Warning Level Log");
+            _logger.LogError($"{nameof(StudentsServices)} - {nameof(UpdateStudent)} - Error Level Log");
+            _logger.LogCritical($"{nameof(StudentsServices)} - {nameof(UpdateStudent)} - Critical Log Level");
+
             return await _context.Students
                          .Where(s => s.Courses.Count == 0)
                          .Include(s => s.Courses)
@@ -38,6 +51,11 @@ namespace BussinesLogic.Logic
 
         public async Task<int> UpdateStudent(int studentId, Student studentUpdated, List<int> newCouresIds)
         {
+            // Configurar loggings
+            _logger.LogWarning($"{nameof(StudentsServices)} - {nameof(UpdateStudent)} - Warning Level Log");
+            _logger.LogError($"{nameof(StudentsServices)} - {nameof(UpdateStudent)} - Error Level Log");
+            _logger.LogCritical($"{nameof(StudentsServices)} - {nameof(UpdateStudent)} - Critical Log Level");
+
 
             var studentDb = await _context.Students
                             .Include(s => s.Courses)

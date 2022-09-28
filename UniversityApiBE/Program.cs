@@ -3,6 +3,7 @@ using BussinesLogic.Logic;
 using Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using System.Text.Json.Serialization;
 using UniversityApiBE.Dtos.Students;
 using UniversityApiBE.Dtos.Users;
@@ -11,6 +12,15 @@ using UniversityApiBE.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+// 10. Configurar serilog (proveedor de loggin)
+builder.Host.UseSerilog((hostBuilderCtx, loggerConfig) =>
+{
+    loggerConfig
+    .WriteTo.Console() 
+    .WriteTo.Debug() 
+    .ReadFrom.Configuration(hostBuilderCtx.Configuration); 
+}); 
 
 //2. Conectarse a BDD SQL Express
 const string CONNECTIONNAME = "UniversityDB";
@@ -127,6 +137,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// 11. Activar Serilog en la app
+app.UseSerilogRequestLogging();
 
 app.UseMiddleware<ExceptionMiddleware>();
 

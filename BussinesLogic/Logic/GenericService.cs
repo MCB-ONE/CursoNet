@@ -3,6 +3,7 @@ using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace BussinesLogic.Logic
 { 
@@ -10,21 +11,36 @@ namespace BussinesLogic.Logic
     public class GenericService<T> : IGenericService<T> where T: BaseEntity
     {
         private readonly UniversityDBContext _context;
-        private DbSet<T> entities;
+        private readonly ILogger<GenericService<T>> _logger;
+        private UniversityDBContext context;
+
+        public GenericService(UniversityDBContext context, ILogger<GenericService<T>> logger)
+        {
+            _context = context;
+            _logger = logger;
+        }
 
         public GenericService(UniversityDBContext context)
         {
-            _context = context;
-            entities = context.Set<T>();
+            this.context = context;
         }
 
         public async Task<IReadOnlyList<T>> GetAllAsync()
-        {       
-          return await _context.Set<T>().ToListAsync();
+        {
+            // Configurar loggings
+            _logger.LogWarning($"{nameof(GenericService<T>)} - {nameof(GetAllAsync)} - Warning Level Log");
+            _logger.LogError($"{nameof(GenericService<T>)} - {nameof(GetAllAsync)} - Error Level Log");
+            _logger.LogCritical($"{nameof(GenericService<T>)} - {nameof(GetAllAsync)} - Critical Log Level");
+
+            return await _context.Set<T>().ToListAsync();
         }
 
         public async Task<T> GetByIdAsync(int id)
         {
+            // Configurar loggings
+            _logger.LogWarning($"{nameof(GenericService<T>)} - {nameof(GetAllAsync)} - Warning Level Log");
+            _logger.LogError($"{nameof(GenericService<T>)} - {nameof(GetAllAsync)} - Error Level Log");
+            _logger.LogCritical($"{nameof(GenericService<T>)} - {nameof(GetAllAsync)} - Critical Log Level");
 
             return await _context.Set<T>().FindAsync(id);
 
@@ -32,16 +48,28 @@ namespace BussinesLogic.Logic
 
         public async Task<T> GetByIdWithSpecAsync(ISpecification<T> spec)
         {
+            _logger.LogWarning($"{nameof(GenericService<T>)} - {nameof(GetByIdWithSpecAsync)} - Warning Level Log");
+            _logger.LogError($"{nameof(GenericService<T>)} - {nameof(GetByIdWithSpecAsync)} - Error Level Log");
+            _logger.LogCritical($"{nameof(GenericService<T>)} - {nameof(GetByIdWithSpecAsync)} - Critical Log Level");
             return await ApplySpecification(spec).FirstOrDefaultAsync();
         }
 
         public async Task<IReadOnlyList<T>> GetAllIdWithSpecAsync(ISpecification<T> spec)
         {
+
+            _logger.LogWarning($"{nameof(GenericService<T>)} - {nameof(GetAllIdWithSpecAsync)} - Warning Level Log");
+            _logger.LogError($"{nameof(GenericService<T>)} - {nameof(GetAllIdWithSpecAsync)} - Error Level Log");
+            _logger.LogCritical($"{nameof(GenericService<T>)} - {nameof(GetAllIdWithSpecAsync)} - Critical Log Level");
+
             return await ApplySpecification(spec).ToListAsync();
         }
 
         public async Task<int> Add(T entity)
         {
+            _logger.LogWarning($"{nameof(GenericService<T>)} - {nameof(Add)} - Warning Level Log");
+            _logger.LogError($"{nameof(GenericService<T>)} - {nameof(Add)} - Error Level Log");
+            _logger.LogCritical($"{nameof(GenericService<T>)} - {nameof(Add)} - Critical Log Level");
+
             if (entity == null)
             {
                 throw new ArgumentNullException("entity");
@@ -53,6 +81,11 @@ namespace BussinesLogic.Logic
 
         public async Task<int> Update(T entity)
         {
+
+            _logger.LogWarning($"{nameof(GenericService<T>)} - {nameof(Update)} - Warning Level Log");
+            _logger.LogError($"{nameof(GenericService<T>)} - {nameof(Update)} - Error Level Log");
+            _logger.LogCritical($"{nameof(GenericService<T>)} - {nameof(Update)} - Critical Log Level");
+
             if (entity == null)
             {
                 throw new ArgumentNullException("entity");
@@ -65,6 +98,10 @@ namespace BussinesLogic.Logic
 
         public async Task<int> Delete(int id)
         {
+            _logger.LogWarning($"{nameof(GenericService<T>)} - {nameof(Delete)} - Warning Level Log");
+            _logger.LogError($"{nameof(GenericService<T>)} - {nameof(Delete)} - Error Level Log");
+            _logger.LogCritical($"{nameof(GenericService<T>)} - {nameof(Delete)} - Critical Log Level");
+
             T entity = await _context.Set<T>().FindAsync(id);
 
             _context.Set<T>().Remove(entity);
@@ -81,29 +118,6 @@ namespace BussinesLogic.Logic
         {
             return (_context.Set<T>().Any(entity => entity.Id == id));
         }
-
-
-
-
-        // DELETE: api/Users/5
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteUser(int id)
-        //{
-        //    if (_context.Users == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var user = await _context.Users.FindAsync(id);
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    _context.Users.Remove(user);
-        //    await _context.SaveChangesAsync();
-
-        //    return NoContent();
-        //}
 
 
     }
